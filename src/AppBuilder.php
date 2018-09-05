@@ -3,8 +3,7 @@
 namespace ToDoApp;
 
 use Slim\App;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use ToDoApp\Controller\HealthCheck;
 
 class AppBuilder
 {
@@ -12,10 +11,7 @@ class AppBuilder
     {
         $app = new App;
 
-        $app->get('/healthcheck', function (Request $request, Response $response, array $args) {
-            $response->getBody()->write("OK");
-            return $response;
-        });
+        $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
 
         return $app;
     }
