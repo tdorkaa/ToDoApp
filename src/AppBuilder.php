@@ -14,7 +14,7 @@ class AppBuilder
         $container = $app->getContainer();
 
         $container['pdo'] = function () {
-            return new PDO('mysql:host=mysql;charset=utf8mb4', 'academy', 'academy', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+            return (new PdoFactory())->getPDO();
         };
 
         $container[HealthCheck::class] = function ($container) {
