@@ -7,8 +7,15 @@ use Slim\Http\Response;
 
 class HealthCheck
 {
-    public function healthcheck(Request $request, Response $response, array $args)
+    private $pdo;
+
+    public function __construct(\PDO $pdo)
     {
+        $this->pdo = $pdo;
+    }
+
+    public function healthcheck(Request $request, Response $response, array $args)
+    {   $this->pdo->query('SELECT 1');
         $response->getBody()->write("OK");
         return $response;
     }
