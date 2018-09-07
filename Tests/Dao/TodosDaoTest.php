@@ -182,4 +182,19 @@ class TodosDaoTest extends TestCase
             ['status' => Status::INCOMPLETE]
         ], $actualStatuses);
     }
+
+    /**
+     * @test
+     */
+    public function findById_GivenExistingTodoId_ReturnsThatTodo()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $actual = $this->todosDao->findById(2);
+        $this->assertEquals($todos[1], $actual);
+    }
 }

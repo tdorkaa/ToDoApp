@@ -102,4 +102,19 @@ class TodosDao
             ':status' => Status::COMPLETE
         ]);
     }
+
+    public function findById($id)
+    {
+        $statement = $this->PDO->prepare('
+            SELECT id, name, description, status, due_at 
+            FROM todos
+            WHERE id=:id
+        ');
+
+        $statement->execute([
+            'id' => $id
+        ]);
+
+        return Todo::fromArray($statement->fetch(\PDO::FETCH_ASSOC));
+    }
 }
