@@ -31,33 +31,29 @@ class TodosDao
 
     private function fetchTodos()
     {
-        $sql = '
+        return $this->PDO->query('
             SELECT id, name, description, status, due_at 
             FROM todos 
             ORDER BY due_at ASC
-        ';
-        $statement = $this->PDO->query($sql);
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        ')->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function addTodo(Todo $todo)
     {
-        $sql = '
+        $this->PDO->prepare('
            INSERT INTO todos (
                 name, 
                 description, 
                 status, 
                 due_at
-            )
-            VALUES (
+           )
+           VALUES (
                 :name, 
                 :description, 
                 :status, 
                 :due_at
-            )
-        ';
-        $statement = $this->PDO->prepare($sql);
-        $statement->execute(array(
+           )
+        ')->execute(array(
             ':name' => $todo->getName(),
             ':description' => $todo->getDescription(),
             ':status' => $todo->getStatus(),
@@ -67,33 +63,29 @@ class TodosDao
 
     public function updateTodo(Todo $todo)
     {
-        $sql = '
+        $this->PDO->prepare('
            UPDATE todos SET
                 name=:name, 
                 description=:description, 
                 status=:status, 
                 due_at=:due_at
-            WHERE id=:id
-        ';
-        $statement = $this->PDO->prepare($sql);
-        $statement->execute(array(
+           WHERE id=:id
+        ')->execute([
             ':id' => $todo->getId(),
             ':name' => $todo->getName(),
             ':description' => $todo->getDescription(),
             ':status' => $todo->getStatus(),
             ':due_at' => $todo->getDueAt()
-        ));
+        ]);
     }
 
     public function deleteTodo($id)
     {
-        $sql = '
+        $this->PDO->prepare('
            DELETE FROM todos
-            WHERE id=:id
-        ';
-        $statement = $this->PDO->prepare($sql);
-        $statement->execute(array(
+           WHERE id=:id
+        ')->execute([
             ':id' => $id
-        ));
+        ]);
     }
 }
