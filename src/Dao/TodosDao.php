@@ -32,7 +32,7 @@ class TodosDao
     private function fetchTodos()
     {
         $sql = '
-            SELECT name, description, status, due_at 
+            SELECT id, name, description, status, due_at 
             FROM todos 
         ';
         $statement = $this->PDO->query($sql);

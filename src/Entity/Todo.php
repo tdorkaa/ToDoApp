@@ -8,25 +8,28 @@ class Todo
     private $description;
     private $status;
     private $due_at;
+    private $id;
 
     public static function fromArray($todo)
     {
-        return new Todo($todo['name'], $todo['description'], $todo['due_at'], $todo['status'] );
+        return new Todo($todo['id'], $todo['name'], $todo['description'], $todo['due_at'], $todo['status']);
     }
 
-    /**
-     * Todo constructor.
-     * @param $name
-     * @param $description
-     * @param $status
-     * @param $due_at
-     */
-    public function __construct($name, $description, $due_at, $status = 'incomplete')
+    public function __construct($id, $name, $description, $due_at, $status = 'incomplete')
     {
         $this->name = $name;
         $this->description = $description;
         $this->setStatus($status);
         $this->due_at = $due_at;
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

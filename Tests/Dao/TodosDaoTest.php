@@ -22,7 +22,7 @@ class TodosDaoTest extends TestCase
      */
     public function listTodos_GivenOneTodoInTheDb_ReturnsTodo()
     {
-        $todo = new Todo('todo name', 'todo description', '2018-08-29 10:00:00');
+        $todo = new Todo(1, 'todo name', 'todo description', '2018-08-29 10:00:00' );
         $this->createTodos([$todo]);
 
         $todosDao = new TodosDao($this->PDO);
