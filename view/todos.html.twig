@@ -1,9 +1,16 @@
 <h1>Todos</h1>
 <ul>
-    {% for todo in todos %}
-        <li>{{ todo.getName() }}</li>
-        <li>{{ todo.getDescription() }}</li>
-        <li>{{ todo.getDueAt() }}</li>
-        <br/>
-    {% endfor %}
+{% for todo in todos %}
+    <li>{{ todo.getName() }}</li>
+    <li>{{ todo.getDescription() }}</li>
+    <li>{{ todo.getDueAt() }}</li>
+    <br/>
+{% endfor %}
 </ul>
+<form method="POST", action="/create/todo">
+    <div>New todo:</div>
+    <input type="string" name="name" placeholder="Todo name">
+    <input type="string" name="description" placeholder="Description">
+    <input type="string" name="due_at" placeholder="Due date">
+    <button type="submit">Create</button>
+</form>
