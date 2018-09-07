@@ -127,4 +127,23 @@ class TodosDaoTest extends TestCase
             $todos[2]
         ], $actualTodo);
     }
+
+    /**
+     * @test
+     */
+    public function deleteTodo_GivenExistingTodos_deletesTodoFromDb()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $this->todosDao->deleteTodo(2);
+        $actualTodo = $this->todosDao->listTodos();
+        $this->assertEquals([
+            $todos[0],
+            $todos[2]
+        ], $actualTodo);
+    }
 }

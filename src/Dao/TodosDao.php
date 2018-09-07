@@ -84,4 +84,16 @@ class TodosDao
             ':due_at' => $todo->getDueAt()
         ));
     }
+
+    public function deleteTodo($id)
+    {
+        $sql = '
+           DELETE FROM todos
+            WHERE id=:id
+        ';
+        $statement = $this->PDO->prepare($sql);
+        $statement->execute(array(
+            ':id' => $id
+        ));
+    }
 }
