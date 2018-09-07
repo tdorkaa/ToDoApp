@@ -166,4 +166,24 @@ class TodosDaoTest extends TestCase
             $todos[2]
         ], $actualTodo);
     }
+
+    /**
+     * @test
+     */
+    public function setComplete_GivenExistingTodo_completeTodo()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $this->todosDao->setComplete(2);
+        $actualStatuses = $this->PDO->query('SELECT status from todos')->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertEquals([
+            ['status' => Status::INCOMPLETE],
+            ['status' => Status::COMPLETE],
+            ['status' => Status::INCOMPLETE]
+        ], $actualStatuses);
+    }
 }

@@ -90,4 +90,16 @@ class TodosDao
             ':id' => $id
         ]);
     }
+
+    public function setComplete($id)
+    {
+        $this->PDO->prepare('
+           UPDATE todos SET
+                status=:status
+           WHERE id=:id
+        ')->execute([
+            ':id' => $id,
+            ':status' => Status::COMPLETE
+        ]);
+    }
 }
