@@ -106,4 +106,25 @@ class TodosDaoTest extends TestCase
         $actualTodo = $this->todosDao->listTodos()[0];
         $this->assertEquals($updatedTodo, $actualTodo);
     }
+
+    /**
+     * @test
+     */
+    public function updateTodo_GivenExistingTodo_updatesOnlyThatTodo()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $updatedTodo = new Todo(2, 'updated name1', 'updated description1', '2018-08-29 10:00:00');
+        $this->todosDao->updateTodo($updatedTodo);
+        $actualTodo = $this->todosDao->listTodos();
+        $this->assertEquals([
+            $todos[0],
+            $updatedTodo,
+            $todos[2]
+        ], $actualTodo);
+    }
 }

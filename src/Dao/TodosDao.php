@@ -73,9 +73,11 @@ class TodosDao
                 description=:description, 
                 status=:status, 
                 due_at=:due_at
+            WHERE id=:id
         ';
         $statement = $this->PDO->prepare($sql);
         $statement->execute(array(
+            ':id' => $todo->getId(),
             ':name' => $todo->getName(),
             ':description' => $todo->getDescription(),
             ':status' => $todo->getStatus(),
