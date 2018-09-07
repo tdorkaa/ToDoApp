@@ -58,7 +58,7 @@ class Todos
 
     public function actionUpdateIndex(Request $request, Response $response, array $args)
     {
-        $this->twig->render($response, 'todo-update.html.twig', ['todo' => $request->getParams()]);
+        $this->twig->render($response, 'todo-update.html.twig', ['todo' => $this->dao->findById($args['id'])]);
     }
 
     public function actionUpdate(Request $request, Response $response, array $args)

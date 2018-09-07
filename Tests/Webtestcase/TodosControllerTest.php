@@ -130,4 +130,19 @@ class TodosControllerTest extends TestCase
             $todos[2],
         ], $actual);
     }
+    /**
+     * @test
+     */
+    public function actionUpdateIndex_ReturnsTodoUpdatePage()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00')
+        ];
+        $this->createTodos($todos);
+        $response = $this->processRequest('GET', '/update/todo/1');
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains($todos[0]->getName(), (string)$response->getBody());
+        $this->assertContains($todos[0]->getDescription(), (string)$response->getBody());
+        $this->assertContains($todos[0]->getDueAt(), (string)$response->getBody());
+    }
 }

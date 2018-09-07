@@ -8,7 +8,7 @@
         <form method="POST" action="/delete/todo/{{ todo.getId() }}">
             <button type="submit">Delete</button>
         </form>
-        <button><a href="/update/todo?name={{ todo.getName() }}&id={{ todo.getId() }}&description={{ todo.getDescription() }}&due_at={{ todo.getDueAt() }}">Update</a></button>
+        <button><a href="/update/todo/{{ todo.getId() }}">Update</a></button>
     </li>
     <li>{{ todo.getName() }}</li>
     <li>{{ todo.getDescription() }}</li>
