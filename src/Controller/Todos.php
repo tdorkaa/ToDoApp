@@ -55,4 +55,20 @@ class Todos
         $this->dao->deleteTodo($args['id']);
         return $response->withRedirect('/', 301);
     }
+
+    public function actionUpdateIndex(Request $request, Response $response, array $args)
+    {
+        $this->twig->render($response, 'todo-update.html.twig', ['todo' => $request->getParams()]);
+    }
+
+    public function actionUpdate(Request $request, Response $response, array $args)
+    {
+        $this->dao->updateTodo(new Todo(
+            $args['id'],
+            $request->getParsedBodyParam('name'),
+            $request->getParsedBodyParam('description'),
+            $request->getParsedBodyParam('due_at')
+        ));
+        return $response->withRedirect('/', 301);
+    }
 }

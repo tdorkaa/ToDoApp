@@ -102,4 +102,32 @@ class TodosControllerTest extends TestCase
         $this->assertEquals($todos[0]->getId(), $actual[0]['id']);
         $this->assertEquals($todos[2]->getId(), $actual[1]['id']);
     }
+
+    /**
+     * @test
+     */
+    public function actionUpdate_UpdatesTodo()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name2', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name3', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $requestBody = [
+            'name' => 'todo name4',
+            'description' => 'todo description4',
+            'due_at' => '2018-08-30 10:00:00'
+        ];
+        $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
+        $actual = array_map(function ($todo) {
+            return Todo::fromArray($todo);
+        }, $this->list('todos'));
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals([
+            $todos[0],
+            new Todo(2, $requestBody['name'], $requestBody['description'], $requestBody['due_at']),
+            $todos[2],
+        ], $actual);
+    }
 }
