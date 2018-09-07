@@ -4,6 +4,7 @@ namespace ToDoApp;
 
 use Slim\App;
 use ToDoApp\Controller\HealthCheck;
+use ToDoApp\Controller\Todos as TodosController;
 
 class AppBuilder
 {
@@ -22,6 +23,7 @@ class AppBuilder
     private static function setUpRoutes($app)
     {
         $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
+        $app->get('/', TodosController::class . ':actionIndex');
     }
 
     private static function setUpDb($container)
