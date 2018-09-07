@@ -3,6 +3,8 @@
 namespace ToDoApp\Dao;
 
 
+use ToDoApp\Entity\Todo;
+
 class TodosDao
 {
 
@@ -13,7 +15,21 @@ class TodosDao
         $this->PDO = $PDO;
     }
 
+    /**
+     * @return Todo[]
+     */
     public function listTodos()
+    {
+        $todos = $this->fetchTodos();
+
+        foreach ($todos as $index => $todo) {
+            $todos[$index] = Todo::fromArray($todo);
+        }
+
+        return $todos;
+    }
+
+    private function fetchTodos()
     {
         $sql = '
             SELECT name, description, status, due_at 

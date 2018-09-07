@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use ToDoApp\Dao\TodosDao;
 use ToDoApp\EnvironmentLoader;
 use ToDoApp\PdoFactory;
+use ToDoApp\Entity\Todo;
 
 class TodosDaoTest extends TestCase
 {
@@ -12,12 +13,7 @@ class TodosDaoTest extends TestCase
      */
     public function listTodos_GivenOneTodoInTheDb_ReturnsTodo()
     {
-        $todo = [
-            'name' => 'todo name',
-            'description' => 'todo description',
-            'status' => 'incomplete',
-            'due_at' => '2018-08-29 10:00:00'
-        ];
+        $todo = new Todo('todo name', 'todo description', '2018-08-29 10:00:00');
         $PDO = (new PdoFactory(new EnvironmentLoader()))->getPDO();
         $PDO->query('TRUNCATE TABLE todos');
 
@@ -37,10 +33,10 @@ class TodosDaoTest extends TestCase
         ';
         $statement = $PDO->prepare($sql);
         $statement->execute(array(
-            ':name'               => $todo['name'],
-            ':description'        => $todo['description'],
-            ':status'             => $todo['status'],
-            ':due_at'             => $todo['due_at'],
+            ':name' => $todo->getName(),
+            ':description' => $todo->getDescription(),
+            ':status' => $todo->getStatus(),
+            ':due_at' => $todo->getDueAt()
         ));
 
         $todosDao = new TodosDao($PDO);
