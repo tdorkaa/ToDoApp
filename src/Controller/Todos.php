@@ -43,4 +43,10 @@ class Todos
 
         return $response->withRedirect('/', 301);
     }
+
+    public function actionComplete(Request $request, Response $response, array $args)
+    {
+        $this->dao->setComplete($args['id']);
+        return $response->withRedirect('/', 301);
+    }
 }

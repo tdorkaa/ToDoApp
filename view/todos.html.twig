@@ -1,13 +1,16 @@
 <h1>Todos</h1>
 <ul>
 {% for todo in todos %}
+    <form method="POST" action="/set-complete/todo/{{ todo.getId() }}">
+        <button type="submit">It is done.</button>
+    </form>
     <li>{{ todo.getName() }}</li>
     <li>{{ todo.getDescription() }}</li>
     <li>{{ todo.getDueAt() }}</li>
     <br/>
 {% endfor %}
 </ul>
-<form method="POST", action="/create/todo">
+<form method="POST" action="/create/todo">
     <div>New todo:</div>
     <input type="string" name="name" placeholder="Todo name">
     <input type="string" name="description" placeholder="Description">

@@ -30,6 +30,7 @@ class AppBuilder
         $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
         $app->get('/', TodosController::class . ':actionIndex');
         $app->post('/create/todo', TodosController::class . ':actionAdd');
+        $app->post('/set-complete/todo/{id}', TodosController::class . ':actionComplete');
     }
 
     private static function setUpDb($container)

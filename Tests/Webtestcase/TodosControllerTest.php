@@ -4,6 +4,7 @@ namespace Tests\Webtestcase;
 
 use PHPUnit\Framework\TestCase;
 use Tests\DbHelperTrait;
+use ToDoApp\Entity\Status;
 use ToDoApp\Entity\Todo;
 
 class TodosControllerTest extends TestCase
@@ -62,5 +63,24 @@ class TodosControllerTest extends TestCase
             'status' => 'incomplete',
             'due_at' => '2018-08-29 10:00:00'
         ], $actual[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function actionComplete_SetsTodoAsCompleted()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name2', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name3', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $response = $this->processRequest('POST', '/set-complete/todo/2');
+        $actual = $this->list('todos');
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals(Status::INCOMPLETE, $actual[0]['status']);
+        $this->assertEquals(Status::COMPLETE,   $actual[1]['status']);
+        $this->assertEquals(Status::INCOMPLETE, $actual[2]['status']);
     }
 }
