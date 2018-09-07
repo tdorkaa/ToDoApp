@@ -5,6 +5,8 @@ namespace ToDoApp;
 use Slim\App;
 use ToDoApp\Controller\HealthCheck;
 use ToDoApp\Controller\Todos as TodosController;
+use ToDoApp\Controller\Todos;
+use ToDoApp\Dao\TodosDao;
 
 class AppBuilder
 {
@@ -39,6 +41,12 @@ class AppBuilder
         $container[HealthCheck::class] = function ($container) {
             return new HealthCheck(
                 $container['pdo']
+            );
+        };
+
+        $container[TodosController::class] = function ($container) {
+            return new TodosController(
+                new TodosDao($container['pdo'])
             );
         };
     }

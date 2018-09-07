@@ -1,18 +1,14 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Tests\DbHelperTrait;
 use ToDoApp\Dao\TodosDao;
 use ToDoApp\Entity\Status;
-use ToDoApp\EnvironmentLoader;
-use ToDoApp\PdoFactory;
 use ToDoApp\Entity\Todo;
 
 class TodosDaoTest extends TestCase
 {
-    /**
-     * @var PDO
-     */
-    private $PDO;
+    use DbHelperTrait;
     /**
      * @var TodosDao
      */
@@ -20,8 +16,8 @@ class TodosDaoTest extends TestCase
 
     protected function setUp()
     {
-        $this->PDO = (new PdoFactory(new EnvironmentLoader()))->getPDO();
-        $this->PDO->query('TRUNCATE TABLE todos');
+        $this->createPDO();
+        $this->truncate('todos');
         $this->todosDao = new TodosDao($this->PDO);
     }
 
