@@ -3,6 +3,8 @@
 namespace ToDoApp;
 
 use Slim\App;
+use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
 use ToDoApp\Controller\HealthCheck;
 use ToDoApp\Controller\Todos as TodosController;
 use ToDoApp\Controller\Todos;
@@ -17,6 +19,7 @@ class AppBuilder
 
         self::setUpRoutes($app);
         self::setUpDb($container);
+        self::setUpTwig($container);
         self::setUpDependencies($container);
 
         return $app;
@@ -36,6 +39,21 @@ class AppBuilder
         return $container;
     }
 
+    private static function setUpTwig($container)
+    {
+        $container['view'] = function ($container) {
+            $view = new Twig(__DIR__ . '/../view', [
+                'cache' => false
+            ]);
+
+            // Instantiate and add Slim specific extension
+            $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
+            $view->addExtension(new TwigExtension($container->get('router'), $basePath));
+
+            return $view;
+        };
+    }
+
     private static function setUpDependencies($container)
     {
         $container[HealthCheck::class] = function ($container) {
@@ -46,7 +64,8 @@ class AppBuilder
 
         $container[TodosController::class] = function ($container) {
             return new TodosController(
-                new TodosDao($container['pdo'])
+                new TodosDao($container['pdo']),
+                $container['view']
             );
         };
     }

@@ -1,0 +1,9 @@
+<h1>Todos</h1>
+<ul>
+    {% for todo in todos %}
+        <li>{{ todo.getName() }}</li>
+        <li>{{ todo.getDescription() }}</li>
+        <li>{{ todo.getDueAt() }}</li>
+        <br/>
+    {% endfor %}
+</ul>

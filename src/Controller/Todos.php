@@ -4,8 +4,8 @@ namespace ToDoApp\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Views\Twig;
 use ToDoApp\Dao\TodosDao;
-use ToDoApp\Entity\Todo;
 
 class Todos
 {
@@ -13,29 +13,19 @@ class Todos
      * @var TodosDao
      */
     private $dao;
+    /**
+     * @var Twig
+     */
+    private $twig;
 
-    public function __construct(TodosDao $dao)
+    public function __construct(TodosDao $dao, Twig $twig)
     {
         $this->dao = $dao;
+        $this->twig = $twig;
     }
 
     public function actionIndex(Request $request, Response $response, array $args)
     {
-        return $response->write(
-            json_encode(
-                array_map(
-                    function (Todo $todo) {
-                        return [
-                            'name' => $todo->getName(),
-                            'description' => $todo->getDescription(),
-                            'due_at' => $todo->getDueAt(),
-                            'status' => $todo->getStatus(),
-                        ];
-                    },
-                    $this->dao->listTodos()
-                ),
-                JSON_PRETTY_PRINT
-            )
-        );
+        $this->twig->render($response, 'todos.html.twig', ['todos' => $this->dao->listTodos()]);
     }
 }
