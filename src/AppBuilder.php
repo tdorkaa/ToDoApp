@@ -29,6 +29,7 @@ class AppBuilder
     {
         $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
         $app->get('/', TodosController::class . ':actionIndex');
+        $app->post('/create/todo', TodosController::class . ':actionAdd');
     }
 
     private static function setUpDb($container)

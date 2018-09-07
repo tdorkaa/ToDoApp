@@ -10,7 +10,7 @@ use ToDoApp\AppBuilder;
 trait ProcessRequestTrait
 {
 
-    private function processRequest($method, $url): Response
+    private function processRequest($method, $url, $body = null): Response
     {
         $app = AppBuilder::build();
 
@@ -20,6 +20,9 @@ trait ProcessRequestTrait
                 'REQUEST_URI' => $url
             ])
         );
+        if ($body) {
+            $request = $request->withParsedBody($body);
+        }
 
         return $app->process($request, new Response());
     }

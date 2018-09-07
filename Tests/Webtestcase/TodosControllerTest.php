@@ -45,4 +45,22 @@ class TodosControllerTest extends TestCase
         $this->assertContains('todo name2', (string)$response->getBody());
         $this->assertContains('todo name3', (string)$response->getBody());
     }
+
+    /**
+     * @test
+     */
+    public function actionAdd_InsertsTodoToDb()
+    {
+        $body = ['name' => 'todo name1', 'description' => 'todo description', 'due_at' => '2018-08-29 10:00:00'];
+        $response = $this->processRequest('POST', '/create/todo', $body);
+        $actual = $this->list('todos');
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals([
+            'id' => 1,
+            'name' => 'todo name1',
+            'description' => 'todo description',
+            'status' => 'incomplete',
+            'due_at' => '2018-08-29 10:00:00'
+        ], $actual[0]);
+    }
 }

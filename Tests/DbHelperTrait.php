@@ -24,7 +24,12 @@ trait DbHelperTrait
 
     private function truncate($table)
     {
-        $this->PDO->query('TRUNCATE TABLE ' . $table );
+        $this->PDO->query('TRUNCATE TABLE ' . $table);
+    }
+
+    private function list($table): array
+    {
+        return $this->PDO->query('SELECT * from ' . $table)->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
