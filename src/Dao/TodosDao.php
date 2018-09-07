@@ -3,6 +3,7 @@
 namespace ToDoApp\Dao;
 
 
+use ToDoApp\Entity\Status;
 use ToDoApp\Entity\Todo;
 
 class TodosDao
@@ -31,11 +32,12 @@ class TodosDao
 
     private function fetchTodos()
     {
-        return $this->PDO->query('
-            SELECT id, name, description, status, due_at 
+        $statusIncomplete = Status::INCOMPLETE;
+        return $this->PDO->query("SELECT id, name, description, status, due_at 
             FROM todos 
-            ORDER BY due_at ASC
-        ')->fetchAll(\PDO::FETCH_ASSOC);
+            WHERE status = '${statusIncomplete}'
+            ORDER BY due_at ASC"
+        )->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function addTodo(Todo $todo)

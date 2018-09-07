@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use ToDoApp\Dao\TodosDao;
+use ToDoApp\Entity\Status;
 use ToDoApp\EnvironmentLoader;
 use ToDoApp\PdoFactory;
 use ToDoApp\Entity\Todo;
@@ -51,6 +52,25 @@ class TodosDaoTest extends TestCase
         $this->assertEquals($todos[0], $result[1]);
         $this->assertEquals($todos[1], $result[2]);
         $this->assertEquals($todos[2], $result[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function listTodos_SomeCompletedTodods_ReturnsOnlyIncompleteTodos()
+    {
+
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-30 10:00:00', Status::COMPLETE),
+            new Todo(2, 'todo name2', 'todo description2', '2018-08-30 10:00:00'),
+            new Todo(3, 'todo name3', 'todo description3', '2018-08-30 10:00:00')
+        ];
+        $this->createTodos($todos);
+        $result = $this->todosDao->listTodos();
+        $this->assertEquals([
+            $todos[1],
+            $todos[2]
+        ], $result);
     }
 
     private function createTodos($todos)
