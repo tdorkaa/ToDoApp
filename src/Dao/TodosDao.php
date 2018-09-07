@@ -64,4 +64,22 @@ class TodosDao
             ':due_at' => $todo->getDueAt()
         ));
     }
+
+    public function updateTodo(Todo $todo)
+    {
+        $sql = '
+           UPDATE todos SET
+                name=:name, 
+                description=:description, 
+                status=:status, 
+                due_at=:due_at
+        ';
+        $statement = $this->PDO->prepare($sql);
+        $statement->execute(array(
+            ':name' => $todo->getName(),
+            ':description' => $todo->getDescription(),
+            ':status' => $todo->getStatus(),
+            ':due_at' => $todo->getDueAt()
+        ));
+    }
 }

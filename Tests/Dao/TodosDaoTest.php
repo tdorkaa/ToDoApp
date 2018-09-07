@@ -93,4 +93,17 @@ class TodosDaoTest extends TestCase
         $this->assertEquals($todo->getDueAt(), $actual->getDueAt());
         $this->assertEquals($todo->getStatus(), $actual->getStatus());
     }
+
+    /**
+     * @test
+     */
+    public function updateTodo_GivenExistingTodo_updatesTodoWithNewFields()
+    {
+        $todo = new Todo(null, 'todo name1', 'todo description1', '2018-08-29 10:00:00');
+        $this->todosDao->addTodo($todo);
+        $updatedTodo = new Todo(1, 'updated name1', 'updated description1', '2018-08-30 10:00:00');
+        $this->todosDao->updateTodo($updatedTodo);
+        $actualTodo = $this->todosDao->listTodos()[0];
+        $this->assertEquals($updatedTodo, $actualTodo);
+    }
 }
