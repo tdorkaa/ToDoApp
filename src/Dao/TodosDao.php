@@ -34,6 +34,7 @@ class TodosDao
         $sql = '
             SELECT id, name, description, status, due_at 
             FROM todos 
+            ORDER BY due_at ASC
         ';
         $statement = $this->PDO->query($sql);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
