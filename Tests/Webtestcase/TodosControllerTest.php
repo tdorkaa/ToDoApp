@@ -83,4 +83,23 @@ class TodosControllerTest extends TestCase
         $this->assertEquals(Status::COMPLETE,   $actual[1]['status']);
         $this->assertEquals(Status::INCOMPLETE, $actual[2]['status']);
     }
+
+    /**
+     * @test
+     */
+    public function actionDelete_DeletesTodo()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name2', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name3', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $response = $this->processRequest('POST', '/delete/todo/2');
+        $actual = $this->list('todos');
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals(2, count($actual));
+        $this->assertEquals($todos[0]->getId(), $actual[0]['id']);
+        $this->assertEquals($todos[2]->getId(), $actual[1]['id']);
+    }
 }

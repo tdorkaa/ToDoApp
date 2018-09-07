@@ -31,6 +31,7 @@ class AppBuilder
         $app->get('/', TodosController::class . ':actionIndex');
         $app->post('/create/todo', TodosController::class . ':actionAdd');
         $app->post('/set-complete/todo/{id}', TodosController::class . ':actionComplete');
+        $app->post('/delete/todo/{id}', TodosController::class . ':actionDelete');
     }
 
     private static function setUpDb($container)

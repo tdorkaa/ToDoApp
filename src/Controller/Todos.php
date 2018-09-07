@@ -49,4 +49,10 @@ class Todos
         $this->dao->setComplete($args['id']);
         return $response->withRedirect('/', 301);
     }
+
+    public function actionDelete(Request $request, Response $response, array $args)
+    {
+        $this->dao->deleteTodo($args['id']);
+        return $response->withRedirect('/', 301);
+    }
 }

@@ -1,9 +1,14 @@
 <h1>Todos</h1>
 <ul>
 {% for todo in todos %}
-    <form method="POST" action="/set-complete/todo/{{ todo.getId() }}">
-        <button type="submit">It is done.</button>
-    </form>
+    <li>
+        <form method="POST" action="/set-complete/todo/{{ todo.getId() }}">
+            <button type="submit">It is done.</button>
+        </form>
+        <form method="POST" action="/delete/todo/{{ todo.getId() }}">
+            <button type="submit">Delete</button>
+        </form>
+    </li>
     <li>{{ todo.getName() }}</li>
     <li>{{ todo.getDescription() }}</li>
     <li>{{ todo.getDueAt() }}</li>
