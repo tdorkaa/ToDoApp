@@ -79,4 +79,18 @@ class TodosDaoTest extends TestCase
             ));
         }
     }
+
+    /**
+     * @test
+     */
+    public function addTodo_GivenTodo_AddsTodoToDb()
+    {
+        $todo = new Todo(null, 'todo name1', 'todo description1', '2018-08-29 10:00:00');
+        $this->todosDao->addTodo($todo);
+        $actual = $this->todosDao->listTodos()[0];
+        $this->assertEquals($todo->getName(), $actual->getName());
+        $this->assertEquals($todo->getDescription(), $actual->getDescription());
+        $this->assertEquals($todo->getDueAt(), $actual->getDueAt());
+        $this->assertEquals($todo->getStatus(), $actual->getStatus());
+    }
 }

@@ -39,4 +39,29 @@ class TodosDao
         $statement = $this->PDO->query($sql);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function addTodo(Todo $todo)
+    {
+        $sql = '
+           INSERT INTO todos (
+                name, 
+                description, 
+                status, 
+                due_at
+            )
+            VALUES (
+                :name, 
+                :description, 
+                :status, 
+                :due_at
+            )
+        ';
+        $statement = $this->PDO->prepare($sql);
+        $statement->execute(array(
+            ':name' => $todo->getName(),
+            ':description' => $todo->getDescription(),
+            ':status' => $todo->getStatus(),
+            ':due_at' => $todo->getDueAt()
+        ));
+    }
 }
