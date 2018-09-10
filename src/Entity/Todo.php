@@ -72,5 +72,7 @@ class Todo
         return $this->due_at;
     }
 
-
+    public function getTodoAsAnAssocArray() {
+        return get_object_vars($this);
+    }
 }
