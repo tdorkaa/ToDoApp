@@ -33,11 +33,14 @@ class TodosDao
     private function fetchTodos()
     {
         $statusIncomplete = Status::INCOMPLETE;
-        return $this->PDO->query("SELECT id, name, description, status, due_at 
+        $statement = $this->PDO->prepare("SELECT id, name, description, status, due_at 
             FROM todos 
-            WHERE status = '${statusIncomplete}'
+            WHERE status=:status
             ORDER BY due_at ASC"
-        )->fetchAll(\PDO::FETCH_ASSOC);
+        );
+
+        $statement->execute([':status' => $statusIncomplete]);
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function addTodo(Todo $todo)
