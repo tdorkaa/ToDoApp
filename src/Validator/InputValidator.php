@@ -14,10 +14,15 @@ class InputValidator
      */
     public function validate(Todo $todo)
     {
-        foreach ($todo->getTodoAsAnAssocArray() as $key => $value) {
+        $errorMessage = [];
+        foreach (array_slice($todo->getTodoAsAnAssocArray(), 0, 4) as $key => $value) {
             if(empty($value)) {
-                throw new InvalidInputException(ucfirst($key) . ' is missing.');
+                array_push($errorMessage, ucfirst($key) . ' is missing.');
             }
+        }
+        var_dump($errorMessage);
+        if(!empty($errorMessage)) {
+            throw new InvalidInputException(implode(', ', $errorMessage));
         }
     }
 }

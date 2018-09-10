@@ -39,4 +39,25 @@ class InputValidatorTest extends TestCase
         $this->expectExceptionMessage('Description is missing.');
         $inputValidator->validate(new Todo(1, 'name todo', '', '2018-08-29 10:00:00'));
     }
+
+    /**
+     * @test
+     */
+    public function validate_IdNull_DoesNotThrowException()
+    {
+        $inputValidator = new InputValidator();
+        $inputValidator->validate(new Todo(null, 'name todo', 'description', '2018-08-29 10:00:00'));
+        $this->expectNotToPerformAssertions();
+    }
+
+    /**
+     * @test
+     */
+    public function validate_NameDescriptionAndDueDateInputsAreMissing_ThrowsException()
+    {
+        $inputValidator = new InputValidator();
+        $this->expectException(InvalidInputException::class);
+        $this->expectExceptionMessage('Name is missing., Description is missing., Due_at is missing.');
+        $inputValidator->validate(new Todo(null, '', '', ''));
+    }
 }
