@@ -77,11 +77,11 @@ class TodosControllerTest extends TestCase
         ];
         $this->createTodos($todos);
         $response = $this->processRequest('POST', '/set-complete/todo/2');
-        $actual = $this->list('todos');
+        $actual = $this->listTodos();
         $this->assertEquals(301, $response->getStatusCode());
-        $this->assertEquals(Status::INCOMPLETE, $actual[0]['status']);
-        $this->assertEquals(Status::COMPLETE,   $actual[1]['status']);
-        $this->assertEquals(Status::INCOMPLETE, $actual[2]['status']);
+        $this->assertEquals(Status::INCOMPLETE, $actual[0]->getStatus());
+        $this->assertEquals(Status::COMPLETE,   $actual[1]->getStatus());
+        $this->assertEquals(Status::INCOMPLETE, $actual[2]->getStatus());
     }
 
     /**
@@ -96,11 +96,11 @@ class TodosControllerTest extends TestCase
         ];
         $this->createTodos($todos);
         $response = $this->processRequest('POST', '/delete/todo/2');
-        $actual = $this->list('todos');
+        $actual = $this->listTodos();
         $this->assertEquals(301, $response->getStatusCode());
         $this->assertEquals(2, count($actual));
-        $this->assertEquals($todos[0]->getId(), $actual[0]['id']);
-        $this->assertEquals($todos[2]->getId(), $actual[1]['id']);
+        $this->assertEquals($todos[0]->getId(), $actual[0]->getId());
+        $this->assertEquals($todos[2]->getId(), $actual[1]->getId());
     }
 
     /**
@@ -120,9 +120,7 @@ class TodosControllerTest extends TestCase
             'due_at' => '2018-08-30 10:00:00'
         ];
         $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
-        $actual = array_map(function ($todo) {
-            return Todo::fromArray($todo);
-        }, $this->list('todos'));
+        $actual = $this->listTodos();
         $this->assertEquals(301, $response->getStatusCode());
         $this->assertEquals([
             $todos[0],

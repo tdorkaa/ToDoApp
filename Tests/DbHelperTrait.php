@@ -32,6 +32,13 @@ trait DbHelperTrait
         return $this->PDO->query('SELECT * from ' . $table)->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    private function listTodos(): array
+    {
+        return array_map(function ($todo) {
+            return Todo::fromArray($todo);
+        }, $this->list('todos'));
+    }
+
     /**
      * @param Todo[] $todos
      */
