@@ -23,10 +23,14 @@ class InputValidatorTest extends TestCase
      */
     public function validate_NameInputIsMissing_ThrowsException()
     {
-        $inputValidator = new InputValidator();
-        $this->expectException(InvalidInputException::class);
-        $this->expectExceptionMessage('Name is missing.');
-        $inputValidator->validate(new Todo(1, '', 'todo description', '2018-08-29 10:00:00'));
+        try {
+            $inputValidator = new InputValidator();
+            $inputValidator->validate(new Todo(1, '', 'todo description', '2018-08-29 10:00:00'));
+            $this->fail('An exception was expected');
+        } catch (InvalidInputException $exception) {
+            $actualErrorCodes= $exception->getErrorCodes();
+            $this->assertEquals([InputValidator::ERROR_EMPTY_NAME], $actualErrorCodes);
+        }
     }
 
     /**
@@ -34,20 +38,29 @@ class InputValidatorTest extends TestCase
      */
     public function validate_DescriptionInputIsMissing_ThrowsException()
     {
-        $inputValidator = new InputValidator();
-        $this->expectException(InvalidInputException::class);
-        $this->expectExceptionMessage('Description is missing.');
-        $inputValidator->validate(new Todo(1, 'name todo', '', '2018-08-29 10:00:00'));
+        try {
+            $inputValidator = new InputValidator();
+            $inputValidator->validate(new Todo(1, 'todo name', '', '2018-08-29 10:00:00'));
+            $this->fail('An exception was expected');
+        } catch (InvalidInputException $exception) {
+            $actualErrorCodes= $exception->getErrorCodes();
+            $this->assertEquals([InputValidator::ERROR_EMPTY_DESCRIPTION], $actualErrorCodes);
+        }
     }
 
     /**
      * @test
      */
-    public function validate_IdNull_DoesNotThrowException()
+    public function validate_DueAtInputIsMissing_ThrowsException()
     {
-        $inputValidator = new InputValidator();
-        $inputValidator->validate(new Todo(null, 'name todo', 'description', '2018-08-29 10:00:00'));
-        $this->expectNotToPerformAssertions();
+        try {
+            $inputValidator = new InputValidator();
+            $inputValidator->validate(new Todo(1, 'todo name', 'todo description', ''));
+            $this->fail('An exception was expected');
+        } catch (InvalidInputException $exception) {
+            $actualErrorCodes= $exception->getErrorCodes();
+            $this->assertEquals([InputValidator::ERROR_EMPTY_DUE_AT], $actualErrorCodes);
+        }
     }
 
     /**
@@ -55,9 +68,13 @@ class InputValidatorTest extends TestCase
      */
     public function validate_NameDescriptionAndDueDateInputsAreMissing_ThrowsException()
     {
-        $inputValidator = new InputValidator();
-        $this->expectException(InvalidInputException::class);
-        $this->expectExceptionMessage('Name is missing., Description is missing., Due date is missing.');
-        $inputValidator->validate(new Todo(null, '', '', ''));
+        try {
+            $inputValidator = new InputValidator();
+            $inputValidator->validate(new Todo(null, '', '', ''));
+            $this->fail('An exception was expected');
+        } catch (InvalidInputException $exception) {
+            $actualErrorCodes= $exception->getErrorCodes();
+            $this->assertEquals([InputValidator::ERROR_EMPTY_NAME, InputValidator::ERROR_EMPTY_DESCRIPTION, InputValidator::ERROR_EMPTY_DUE_AT], $actualErrorCodes);
+        }
     }
 }
