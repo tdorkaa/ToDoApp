@@ -77,12 +77,20 @@ class Todos
 
     public function actionUpdate(Request $request, Response $response, array $args)
     {
-        $this->dao->updateTodo(new Todo(
+        $error = '';
+        $todo = new Todo(
             $args['id'],
             $request->getParsedBodyParam('name'),
             $request->getParsedBodyParam('description'),
             $request->getParsedBodyParam('due_at')
-        ));
-        return $response->withRedirect('/', 301);
+        );
+        try {
+            $this->inputValidator->validate($todo);
+            $this->dao->updateTodo($todo);
+        } catch (InvalidInputException $exception) {
+            $error = $exception->getMessage();
+        }
+        $url = '/' . ($error ? '?errors=' . $error : '');
+        return $response->withRedirect($url, 301);
     }
 }
