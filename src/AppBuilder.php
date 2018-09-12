@@ -73,8 +73,7 @@ class AppBuilder
         $container[TodosController::class] = function ($container) {
             return new TodosController(
                 new TodosDao($container['pdo']),
-                $container['view'],
-                new InputValidator()
+                $container['view']
             );
         };
 

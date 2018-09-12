@@ -6,9 +6,6 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use ToDoApp\Dao\TodosDao;
-use ToDoApp\Entity\Todo;
-use ToDoApp\Exception\InvalidInputException;
-use ToDoApp\Validator\InputValidator;
 
 class Todos
 {
@@ -20,16 +17,11 @@ class Todos
      * @var Twig
      */
     private $twig;
-    /**
-     * @var InputValidator
-     */
-    private $inputValidator;
 
-    public function __construct(TodosDao $dao, Twig $twig, InputValidator $inputValidator)
+    public function __construct(TodosDao $dao, Twig $twig)
     {
         $this->dao = $dao;
         $this->twig = $twig;
-        $this->inputValidator = $inputValidator;
     }
 
     public function actionIndex(Request $request, Response $response, array $args)
