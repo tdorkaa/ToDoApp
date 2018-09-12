@@ -57,7 +57,7 @@ class InputValidatorTest extends TestCase
     {
         $inputValidator = new InputValidator();
         $this->expectException(InvalidInputException::class);
-        $this->expectExceptionMessage('Name is missing., Description is missing., Due_at is missing.');
+        $this->expectExceptionMessage('Name is missing., Description is missing., Due date is missing.');
         $inputValidator->validate(new Todo(null, '', '', ''));
     }
 }

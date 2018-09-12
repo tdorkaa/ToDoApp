@@ -15,11 +15,6 @@ class Todo
         return new Todo($todo['id'], $todo['name'], $todo['description'], $todo['due_at'], $todo['status']);
     }
 
-
-    public function getTodoAsAnAssocArray(): array {
-        return get_object_vars($this);
-    }
-
     public function __construct($id, $name, $description, $due_at, $status = 'incomplete')
     {
         $this->name = $name;

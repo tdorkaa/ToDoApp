@@ -15,13 +15,16 @@ class InputValidator
     public function validate(Todo $todo)
     {
         $errorMessage = [];
-        foreach (array_slice($todo->getTodoAsAnAssocArray(), 0, 4) as $key => $value) {
-            if(empty($value)) {
-                array_push($errorMessage, ucfirst($key) . ' is missing.');
-            }
+        if (empty($todo->getName())) {
+            array_push($errorMessage, 'Name is missing.');
         }
-        var_dump($errorMessage);
-        if(!empty($errorMessage)) {
+        if (empty($todo->getDescription())) {
+            array_push($errorMessage, 'Description is missing.');
+        }
+        if (empty($todo->getDueAt())) {
+            array_push($errorMessage, 'Due date is missing.');
+        }
+        if (!empty($errorMessage)) {
             throw new InvalidInputException(implode(', ', $errorMessage));
         }
     }

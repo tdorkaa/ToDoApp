@@ -68,6 +68,19 @@ class TodosControllerTest extends TestCase
     /**
      * @test
      */
+    public function actionAdd_GivenEmptyData_DoesNotInsertAndSendErrorsInUrl()
+    {
+        $body = ['name' => '', 'description' => '', 'due_at' => ''];
+        $response = $this->processRequest('POST', '/create/todo', $body);
+        $actual = $this->list('todos');
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals('/?errors=Name is missing., Description is missing., Due date is missing.', $response->getHeaderLine('Location'));
+        $this->assertEquals([], $actual);
+    }
+
+    /**
+     * @test
+     */
     public function actionComplete_SetsTodoAsCompleted()
     {
         $todos = [

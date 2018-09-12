@@ -7,6 +7,8 @@ use Slim\Http\Response;
 use Slim\Views\Twig;
 use ToDoApp\Dao\TodosDao;
 use ToDoApp\Entity\Todo;
+use ToDoApp\Exception\InvalidInputException;
+use ToDoApp\Validator\InputValidator;
 
 class Todos
 {
@@ -18,11 +20,16 @@ class Todos
      * @var Twig
      */
     private $twig;
+    /**
+     * @var InputValidator
+     */
+    private $inputValidator;
 
-    public function __construct(TodosDao $dao, Twig $twig)
+    public function __construct(TodosDao $dao, Twig $twig, InputValidator $inputValidator)
     {
         $this->dao = $dao;
         $this->twig = $twig;
+        $this->inputValidator = $inputValidator;
     }
 
     public function actionIndex(Request $request, Response $response, array $args)
@@ -32,16 +39,23 @@ class Todos
 
     public function actionAdd(Request $request, Response $response, array $args)
     {
-        $this->dao->addTodo(
-            new Todo(
-                null,
-                $request->getParsedBodyParam('name'),
-                $request->getParsedBodyParam('description'),
-                $request->getParsedBodyParam('due_at')
-            )
-        );
 
-        return $response->withRedirect('/', 301);
+        $todo = new Todo(
+            null,
+            $request->getParsedBodyParam('name'),
+            $request->getParsedBodyParam('description'),
+            $request->getParsedBodyParam('due_at')
+        );
+        $error = '';
+        try {
+            $this->inputValidator->validate($todo);
+            $this->dao->addTodo($todo);
+        } catch (InvalidInputException $exception) {
+            $error = $exception->getMessage();
+        }
+
+        $url = '/' . ($error ? '?errors=' . $error : '');
+        return $response->withRedirect($url, 301);
     }
 
     public function actionComplete(Request $request, Response $response, array $args)

@@ -9,6 +9,7 @@ use ToDoApp\Controller\HealthCheck;
 use ToDoApp\Controller\Todos as TodosController;
 use ToDoApp\Controller\Todos;
 use ToDoApp\Dao\TodosDao;
+use ToDoApp\Validator\InputValidator;
 
 class AppBuilder
 {
@@ -70,7 +71,8 @@ class AppBuilder
         $container[TodosController::class] = function ($container) {
             return new TodosController(
                 new TodosDao($container['pdo']),
-                $container['view']
+                $container['view'],
+                new InputValidator()
             );
         };
     }
