@@ -37,27 +37,6 @@ class Todos
         $this->twig->render($response, 'todos.html.twig', ['todos' => $this->dao->listTodos()]);
     }
 
-    public function actionAdd(Request $request, Response $response, array $args)
-    {
-
-        $todo = new Todo(
-            null,
-            $request->getParsedBodyParam('name'),
-            $request->getParsedBodyParam('description'),
-            $request->getParsedBodyParam('due_at')
-        );
-        $error = '';
-        try {
-            $this->inputValidator->validate($todo);
-            $this->dao->addTodo($todo);
-        } catch (InvalidInputException $exception) {
-            $error = $exception->getMessage();
-        }
-
-        $url = '/' . ($error ? '?errors=' . $error : '');
-        return $response->withRedirect($url, 301);
-    }
-
     public function actionComplete(Request $request, Response $response, array $args)
     {
         $this->dao->setComplete($args['id']);
@@ -73,29 +52,5 @@ class Todos
     public function actionUpdateIndex(Request $request, Response $response, array $args)
     {
         $this->twig->render($response, 'todo-update.html.twig', ['todo' => $this->dao->findById($args['id'])]);
-    }
-
-    public function actionUpdate(Request $request, Response $response, array $args)
-    {
-        $todo = new Todo(
-            $args['id'],
-            $request->getParsedBodyParam('name'),
-            $request->getParsedBodyParam('description'),
-            $request->getParsedBodyParam('due_at')
-        );
-
-        $daoMethod = function () use ($todo) {
-            $this->dao->updateTodo($todo);
-        };
-
-        $error = '';
-        try {
-            $this->inputValidator->validate($todo);
-            $daoMethod();
-        } catch (InvalidInputException $exception) {
-            $error = $exception->getMessage();
-        }
-        $url = '/' . ($error ? '?errors=' . $error : '');
-        return $response->withRedirect($url, 301);
     }
 }

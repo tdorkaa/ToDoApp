@@ -5,7 +5,7 @@ namespace Tests\Webtestcase;
 use PHPUnit\Framework\TestCase;
 use Tests\DbHelperTrait;
 
-class InsertTodoTest extends TestCase
+class InsertTodoActionTest extends TestCase
 {
     use ProcessRequestTrait;
     use DbHelperTrait;

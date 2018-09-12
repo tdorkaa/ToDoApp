@@ -9,6 +9,7 @@ use ToDoApp\Controller\HealthCheck;
 use ToDoApp\Controller\InsertTodoAction;
 use ToDoApp\Controller\Todos as TodosController;
 use ToDoApp\Controller\Todos;
+use ToDoApp\Controller\UpdateTodoAction;
 use ToDoApp\Dao\TodosDao;
 use ToDoApp\Validator\InputValidator;
 
@@ -31,11 +32,10 @@ class AppBuilder
     {
         $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
         $app->get('/', TodosController::class . ':actionIndex');
-//        $app->post('/create/todo', TodosController::class . ':actionAdd');
+        $app->post('/update/todo/{id}', UpdateTodoAction::class . ':actionSave');
         $app->post('/create/todo', InsertTodoAction::class . ':actionSave');
         $app->post('/set-complete/todo/{id}', TodosController::class . ':actionComplete');
         $app->post('/delete/todo/{id}', TodosController::class . ':actionDelete');
-        $app->post('/update/todo/{id}', TodosController::class . ':actionUpdate');
         $app->get('/update/todo/{id}', TodosController::class . ':actionUpdateIndex');
     }
 
@@ -80,6 +80,14 @@ class AppBuilder
 
         $container[InsertTodoAction::class] = function ($container) {
             return new InsertTodoAction(
+                new TodosDao($container['pdo']),
+                $container['view'],
+                new InputValidator()
+            );
+        };
+
+        $container[UpdateTodoAction::class] = function ($container) {
+            return new UpdateTodoAction(
                 new TodosDao($container['pdo']),
                 $container['view'],
                 new InputValidator()
