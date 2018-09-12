@@ -39,7 +39,7 @@ abstract class TodoSave
     {
 
         $todo = new Todo(
-            null,
+            $args['id'] ? $args['id'] : null,
             $request->getParsedBodyParam('name'),
             $request->getParsedBodyParam('description'),
             $request->getParsedBodyParam('due_at')
@@ -51,7 +51,7 @@ abstract class TodoSave
         } catch (InvalidInputException $exception) {
             $error = $exception->getMessage();
         }
-
+        //errors[]=1&errors[]=2&errors[]=foobar
         $url = '/' . ($error ? '?errors=' . $error : '');
         return $response->withRedirect($url, 301);
     }
