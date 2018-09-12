@@ -18,12 +18,13 @@
 </ul>
 <form method="POST" action="/create/todo">
     <div>New todo:</div>
-    {% if errors and name_empty in errors %}
+    {% if 'empty_name' in errors %}
         <p>Please fill the name field out.</p>
-    {% endif %}{% if errors and description_empty in errors %}
+    {% endif %}
+    {% if 'empty_description' in errors %}
         <p>Please fill the description field out.</p>
     {% endif %}
-    {% if errors and due_at_empty in errors %}
+    {% if 'empty_due_at' in errors %}
         <p>Please fill the due at field out.</p>
     {% endif %}
     <input type="string" name="name" placeholder="Todo name">
