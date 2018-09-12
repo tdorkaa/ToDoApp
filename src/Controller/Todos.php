@@ -6,6 +6,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use ToDoApp\Dao\TodosDao;
+use ToDoApp\Validator\InputValidator;
 
 class Todos
 {
@@ -26,7 +27,15 @@ class Todos
 
     public function actionIndex(Request $request, Response $response, array $args)
     {
-        $this->twig->render($response, 'todos.html.twig', ['todos' => $this->dao->listTodos()]);
+        $errors = $request->getParam('errors');
+        $this->twig->render($response, 'todos.html.twig',
+                            [
+                                'todos' => $this->dao->listTodos(),
+                                'errors' => $errors,
+                                'name_empty' => InputValidator::ERROR_EMPTY_NAME,
+                                'description_empty' => InputValidator::ERROR_EMPTY_NAME,
+                                'due_at_empty' => InputValidator::ERROR_EMPTY_NAME
+                            ]);
     }
 
     public function actionComplete(Request $request, Response $response, array $args)

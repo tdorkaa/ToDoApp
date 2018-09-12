@@ -50,6 +50,18 @@ class TodosControllerTest extends TestCase
     /**
      * @test
      */
+    public function actionIndex_GivenUrlContainsErrorCodes_DisplayErrorMessage()
+    {
+        $response = $this->processRequest('GET', '?errors[]=empty_name&errors[]=empty_description&errors[]=empty_due_at');
+
+        $this->assertContains('Please fill the name field out.', (string)$response->getBody());
+        $this->assertContains('Please fill the description field out.', (string)$response->getBody());
+        $this->assertContains('Please fill the due at field out.', (string)$response->getBody());
+    }
+
+    /**
+     * @test
+     */
     public function actionComplete_SetsTodoAsCompleted()
     {
         $todos = [
