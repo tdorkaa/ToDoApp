@@ -4,6 +4,7 @@ namespace Tests\Webtestcase;
 
 use PHPUnit\Framework\TestCase;
 use Tests\DbHelperTrait;
+use ToDoApp\Validator\InputValidator;
 
 class InsertTodoActionTest extends TestCase
 {
@@ -43,7 +44,11 @@ class InsertTodoActionTest extends TestCase
         $response = $this->processRequest('POST', '/create/todo', $body);
         $actual = $this->list('todos');
         $this->assertEquals(301, $response->getStatusCode());
-        $this->assertEquals('/?errors[]=Name is missing.&errors[]=Description is missing.&errors[]=Due date is missing.', $response->getHeaderLine('Location'));
+
+        $emptyNameCode = InputValidator::ERROR_EMPTY_NAME;
+        $emptyDescriptionCode = InputValidator::ERROR_EMPTY_DESCRIPTION;
+        $emptyDueAt = InputValidator::ERROR_EMPTY_DUE_AT;
+        $this->assertEquals("/?errors[]={$emptyNameCode}&errors[]={$emptyDescriptionCode}&errors[]={$emptyDueAt}", $response->getHeaderLine('Location'));
         $this->assertEquals([], $actual);
     }
 }

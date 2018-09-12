@@ -49,7 +49,7 @@ abstract class TodoSave
             $this->inputValidator->validate($todo);
             $this->saveTodo($todo);
         } catch (InvalidInputException $exception) {
-            $errors = explode(', ', $exception->getMessage());
+            $errors = $exception->getErrorCodes();
         }
         $url = '/' . ($errors ? '?errors[]=' . implode('&errors[]=', $errors) : '');
         return $response->withRedirect($url, 301);

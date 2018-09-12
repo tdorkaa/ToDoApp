@@ -5,6 +5,7 @@ namespace Tests\Webtestcase;
 use PHPUnit\Framework\TestCase;
 use Tests\DbHelperTrait;
 use ToDoApp\Entity\Todo;
+use ToDoApp\Validator\InputValidator;
 
 class UpdateTodoActionTest extends TestCase
 {
@@ -62,7 +63,9 @@ class UpdateTodoActionTest extends TestCase
         $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
         $actual = $this->listTodos();
         $this->assertEquals(301, $response->getStatusCode());
-        $this->assertEquals('/?errors[]=Name is missing.', $response->getHeaderLine('Location'));
+
+        $emptyNameCode = InputValidator::ERROR_EMPTY_NAME;
+        $this->assertEquals("/?errors[]={$emptyNameCode}", $response->getHeaderLine('Location'));
         $this->assertEquals($todos, $actual);
     }
 
