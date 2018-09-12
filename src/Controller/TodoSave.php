@@ -44,15 +44,14 @@ abstract class TodoSave
             $request->getParsedBodyParam('description'),
             $request->getParsedBodyParam('due_at')
         );
-        $error = '';
+        $errors = [];
         try {
             $this->inputValidator->validate($todo);
             $this->saveTodo($todo);
         } catch (InvalidInputException $exception) {
-            $error = $exception->getMessage();
+            $errors = explode(', ', $exception->getMessage());
         }
-        //errors[]=1&errors[]=2&errors[]=foobar
-        $url = '/' . ($error ? '?errors=' . $error : '');
+        $url = '/' . ($errors ? '?errors[]=' . implode('&errors[]=', $errors) : '');
         return $response->withRedirect($url, 301);
     }
 
