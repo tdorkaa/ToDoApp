@@ -26,8 +26,6 @@ class Todos
 
     public function actionIndex(Request $request, Response $response, array $args)
     {
-        $errors = $request->getParam('errors');
-        var_dump($errors);
         $this->twig->render($response, 'todos.html.twig', ['todos' => $this->dao->listTodos()]);
     }
 
