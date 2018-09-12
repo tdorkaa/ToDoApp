@@ -77,16 +77,21 @@ class Todos
 
     public function actionUpdate(Request $request, Response $response, array $args)
     {
-        $error = '';
         $todo = new Todo(
             $args['id'],
             $request->getParsedBodyParam('name'),
             $request->getParsedBodyParam('description'),
             $request->getParsedBodyParam('due_at')
         );
+
+        $daoMethod = function () use ($todo) {
+            $this->dao->updateTodo($todo);
+        };
+
+        $error = '';
         try {
             $this->inputValidator->validate($todo);
-            $this->dao->updateTodo($todo);
+            $daoMethod();
         } catch (InvalidInputException $exception) {
             $error = $exception->getMessage();
         }

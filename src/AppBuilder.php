@@ -6,6 +6,7 @@ use Slim\App;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use ToDoApp\Controller\HealthCheck;
+use ToDoApp\Controller\InsertTodoAction;
 use ToDoApp\Controller\Todos as TodosController;
 use ToDoApp\Controller\Todos;
 use ToDoApp\Dao\TodosDao;
@@ -30,7 +31,8 @@ class AppBuilder
     {
         $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
         $app->get('/', TodosController::class . ':actionIndex');
-        $app->post('/create/todo', TodosController::class . ':actionAdd');
+//        $app->post('/create/todo', TodosController::class . ':actionAdd');
+        $app->post('/create/todo', InsertTodoAction::class . ':actionSave');
         $app->post('/set-complete/todo/{id}', TodosController::class . ':actionComplete');
         $app->post('/delete/todo/{id}', TodosController::class . ':actionDelete');
         $app->post('/update/todo/{id}', TodosController::class . ':actionUpdate');
@@ -70,6 +72,14 @@ class AppBuilder
 
         $container[TodosController::class] = function ($container) {
             return new TodosController(
+                new TodosDao($container['pdo']),
+                $container['view'],
+                new InputValidator()
+            );
+        };
+
+        $container[InsertTodoAction::class] = function ($container) {
+            return new InsertTodoAction(
                 new TodosDao($container['pdo']),
                 $container['view'],
                 new InputValidator()
