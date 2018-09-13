@@ -11,6 +11,7 @@ class InputSanitizer
     {
         $todo->setName(trim($todo->getName()));
         $todo->setDescription(trim($todo->getDescription()));
+        $todo->setDueAt(trim($todo->getDueAt()));
         return $todo;
     }
 }
