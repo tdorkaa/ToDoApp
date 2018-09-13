@@ -7,6 +7,9 @@ use ToDoApp\Validator\InputValidator;
 
 class InputValidatorTest extends TestCase
 {
+    /**
+     * @var InputValidator
+     */
     private $inputValidator;
 
     protected function setUp()

@@ -28,8 +28,11 @@ class InputValidator
         }
         if (empty($todo->getDueAt())) {
             array_push($errorCodes, self::ERROR_EMPTY_DUE_AT);
-        } else if (!strtotime($todo->getDueAt())) {
-            array_push($errorCodes, self::ERROR_INVALID_DUE_AT);
+        } else {
+            $invalidDueAt = !strtotime($todo->getDueAt());
+            if ($invalidDueAt) {
+                array_push($errorCodes, self::ERROR_INVALID_DUE_AT);
+            }
         }
         if (!empty($errorCodes)) {
             $invalidInputException = new InvalidInputException();
