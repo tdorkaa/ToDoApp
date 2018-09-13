@@ -32,7 +32,9 @@ class UpdateTodoActionTest extends TestCase
         $requestBody = [
             'name' => 'todo name4',
             'description' => 'todo description4',
-            'due_at' => '2018-08-30 10:00:00'
+            'due_at' => '2018-08-30 10:00:00',
+            'csrf_name' => 'a',
+            'csrf_value' => 'a'
         ];
         $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
         $actual = $this->listTodos();
@@ -58,7 +60,9 @@ class UpdateTodoActionTest extends TestCase
         $requestBody = [
             'name' => '',
             'description' => 'todo description4',
-            'due_at' => '2018-08-30 10:00:00'
+            'due_at' => '2018-08-30 10:00:00',
+            'csrf_name' => 'a',
+            'csrf_value' => 'a'
         ];
         $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
         $actual = $this->listTodos();
@@ -83,7 +87,9 @@ class UpdateTodoActionTest extends TestCase
         $requestBody = [
             'name' => 'todo name2',
             'description' => 'todo description1',
-            'due_at' => 'invalid due at'
+            'due_at' => 'invalid due at',
+            'csrf_name' => 'a',
+            'csrf_value' => 'a'
         ];
         $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
         $actual = $this->listTodos();
@@ -108,7 +114,9 @@ class UpdateTodoActionTest extends TestCase
         $requestBody = [
             'name' => '<br>todo name2',
             'description' => '      todo description1',
-            'due_at' => '2018-08-30 10:00:00          '
+            'due_at' => '2018-08-30 10:00:00          ',
+            'csrf_name' => 'a',
+            'csrf_value' => 'a'
         ];
         $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
         $actual = $this->listTodos();

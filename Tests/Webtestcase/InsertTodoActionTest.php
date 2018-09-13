@@ -22,7 +22,7 @@ class InsertTodoActionTest extends TestCase
      */
     public function actionAdd_InsertsTodoToDb()
     {
-        $body = ['name' => 'todo name1', 'description' => 'todo description', 'due_at' => '2018-08-29 10:00:00'];
+        $body = ['name' => 'todo name1', 'description' => 'todo description', 'due_at' => '2018-08-29 10:00:00', 'csrf_name' => 'a', 'csrf_value' => 'a'];
         $response = $this->processRequest('POST', '/create/todo', $body);
         $actual = $this->list('todos');
         $this->assertEquals(301, $response->getStatusCode());
@@ -40,7 +40,7 @@ class InsertTodoActionTest extends TestCase
      */
     public function actionAdd_GivenEmptyData_DoesNotInsertAndSendErrorsInUrl()
     {
-        $body = ['name' => '', 'description' => '', 'due_at' => ''];
+        $body = ['name' => '', 'description' => '', 'due_at' => '', 'csrf_name' => 'a', 'csrf_value' => 'a'];
         $response = $this->processRequest('POST', '/create/todo', $body);
         $actual = $this->list('todos');
         $this->assertEquals(301, $response->getStatusCode());
@@ -57,7 +57,7 @@ class InsertTodoActionTest extends TestCase
      */
     public function actionAdd_GivenDueAtInvalid_DoesNotInsertAndSendErrorsInUrl()
     {
-        $body = ['name' => 'todo name', 'description' => 'todo description', 'due_at' => 'invalid due date'];
+        $body = ['name' => 'todo name', 'description' => 'todo description', 'due_at' => 'invalid due date', 'csrf_name' => 'a', 'csrf_value' => 'a'];
         $response = $this->processRequest('POST', '/create/todo', $body);
         $actual = $this->list('todos');
         $this->assertEquals(301, $response->getStatusCode());
@@ -71,7 +71,7 @@ class InsertTodoActionTest extends TestCase
      */
     public function actionAdd_GivenInputsAreNotClean_InsertSanitizedTodo()
     {
-        $body = ['name' => '<br>todo name', 'description' => '       todo description', 'due_at' => '2018-08-29 10:00:00         '];
+        $body = ['name' => '<br>todo name', 'description' => '       todo description', 'due_at' => '2018-08-29 10:00:00         ', 'csrf_name' => 'a', 'csrf_value' => 'a'];
         $response = $this->processRequest('POST', '/create/todo', $body);
         $actual = $this->list('todos');
         $this->assertEquals(301, $response->getStatusCode());

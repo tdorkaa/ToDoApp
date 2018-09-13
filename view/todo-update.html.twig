@@ -1,5 +1,7 @@
 <form method="POST" action="/update/todo/{{ todo.id }}">
     <div>Update todo:</div>
+    <input type="hidden" name={{ nameKey }} value={{ name }}>
+    <input type="hidden" name={{ valueKey }} value={{ value }}>
     <input type="string" name="name" placeholder="Todo name" value="{{ todo.getName() }}">
     <input type="string" name="description" placeholder="Description" value="{{ todo.getDescription() }}">
     <input type="string" name="due_at" placeholder="Due date" value="{{ todo.getDueAt() }}">

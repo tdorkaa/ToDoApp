@@ -3,9 +3,13 @@
 {% for todo in todos %}
     <li>
         <form method="POST" action="/set-complete/todo/{{ todo.getId() }}">
+            <input type="hidden" name={{ nameKey }} value={{ name }}>
+            <input type="hidden" name={{ valueKey }} value={{ value }}>
             <button type="submit">It is done.</button>
         </form>
         <form method="POST" action="/delete/todo/{{ todo.getId() }}">
+            <input type="hidden" name={{ nameKey }} value={{ name }}>
+            <input type="hidden" name={{ valueKey }} value={{ value }}>
             <button type="submit">Delete</button>
         </form>
         <button><a href="/update/todo/{{ todo.getId() }}">Update</a></button>
@@ -17,6 +21,8 @@
 {% endfor %}
 </ul>
 <form method="POST" action="/create/todo">
+    <input type="hidden" name={{ nameKey }} value={{ name }}>
+    <input type="hidden" name={{ valueKey }} value={{ value }}>
     <div>New todo:</div>
     {% if 'empty_name' in errors %}
         <p>Please fill the name field out.</p>

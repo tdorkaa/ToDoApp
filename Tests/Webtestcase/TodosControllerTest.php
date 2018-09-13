@@ -70,7 +70,8 @@ class TodosControllerTest extends TestCase
             new Todo(3, 'todo name3', 'todo description1', '2018-08-29 10:00:00'),
         ];
         $this->createTodos($todos);
-        $response = $this->processRequest('POST', '/set-complete/todo/2');
+        $requestBody = ['csrf_name' => 'a', 'csrf_value' => 'a'];
+        $response = $this->processRequest('POST', '/set-complete/todo/2', $requestBody);
         $actual = $this->listTodos();
         $this->assertEquals(301, $response->getStatusCode());
         $this->assertEquals(Status::INCOMPLETE, $actual[0]->getStatus());
@@ -89,7 +90,8 @@ class TodosControllerTest extends TestCase
             new Todo(3, 'todo name3', 'todo description1', '2018-08-29 10:00:00'),
         ];
         $this->createTodos($todos);
-        $response = $this->processRequest('POST', '/delete/todo/2');
+        $requestBody = ['csrf_name' => 'a', 'csrf_value' => 'a'];
+        $response = $this->processRequest('POST', '/delete/todo/2', $requestBody);
         $actual = $this->listTodos();
         $this->assertEquals(301, $response->getStatusCode());
         $this->assertEquals(2, count($actual));

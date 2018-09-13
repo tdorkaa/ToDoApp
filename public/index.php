@@ -2,7 +2,7 @@
 
 use ToDoApp\AppBuilder;
 
-require '../vendor/autoload.php';
+require '../bootstrap.php';
 
 $app = AppBuilder::build();
 $app->run();

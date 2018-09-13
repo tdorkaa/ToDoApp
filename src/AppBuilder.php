@@ -3,6 +3,8 @@
 namespace ToDoApp;
 
 use Slim\App;
+use Slim\Container;
+use Slim\Csrf\Guard;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use ToDoApp\Controller\HealthCheck;
@@ -16,10 +18,17 @@ use ToDoApp\Validator\InputValidator;
 
 class AppBuilder
 {
-    public static function build()
+    public static function build(Container $container = null)
     {
-        $app = new App;
-        $container = $app->getContainer();
+        if(!$container) {
+            $container = new Container();
+            $container['csrf'] = function ($c) {
+                return new Guard;
+            };
+        }
+
+        $app = new App($container);
+        $app->add($container->get('csrf'));
 
         self::setUpRoutes($app);
         self::setUpDb($container);
@@ -74,7 +83,8 @@ class AppBuilder
         $container[TodosController::class] = function ($container) {
             return new TodosController(
                 new TodosDao($container['pdo']),
-                $container['view']
+                $container['view'],
+                $container['csrf']
             );
         };
 
