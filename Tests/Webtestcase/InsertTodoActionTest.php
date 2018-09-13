@@ -65,4 +65,22 @@ class InsertTodoActionTest extends TestCase
         $this->assertEquals("/?errors[]={$invalidDueDate}", $response->getHeaderLine('Location'));
         $this->assertEquals([], $actual);
     }
+
+    /**
+     * @test
+     */
+    public function actionAdd_GivenInputsAreNotClean_InsertSanitizedTodo()
+    {
+        $body = ['name' => '<br>todo name', 'description' => '       todo description', 'due_at' => '2018-08-29 10:00:00         '];
+        $response = $this->processRequest('POST', '/create/todo', $body);
+        $actual = $this->list('todos');
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals([
+            'id' => 1,
+            'name' => 'todo name',
+            'description' => 'todo description',
+            'status' => 'incomplete',
+            'due_at' => '2018-08-29 10:00:00'
+        ], $actual[0]);
+    }
 }

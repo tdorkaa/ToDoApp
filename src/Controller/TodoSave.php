@@ -9,6 +9,7 @@ use Slim\Views\Twig;
 use ToDoApp\Dao\TodosDao;
 use ToDoApp\Entity\Todo;
 use ToDoApp\Exception\InvalidInputException;
+use ToDoApp\Sanitizer\InputSanitizer;
 use ToDoApp\Validator\InputValidator;
 
 abstract class TodoSave
@@ -26,13 +27,18 @@ abstract class TodoSave
      * @var InputValidator
      */
     private $inputValidator;
+    /**
+     * @var InputSanitizer
+     */
+    private $inputSanitizer;
 
-    public function __construct(TodosDao $dao, Twig $twig, InputValidator $inputValidator)
+    public function __construct(TodosDao $dao, Twig $twig, InputValidator $inputValidator, InputSanitizer $inputSanitizer)
     {
 
         $this->dao = $dao;
         $this->twig = $twig;
         $this->inputValidator = $inputValidator;
+        $this->inputSanitizer = $inputSanitizer;
     }
 
     public function actionSave(Request $request, Response $response, array $args)
@@ -46,6 +52,7 @@ abstract class TodoSave
         );
         $errors = [];
         try {
+            $this->inputSanitizer->sanitize($todo);
             $this->inputValidator->validate($todo);
             $this->saveTodo($todo);
         } catch (InvalidInputException $exception) {

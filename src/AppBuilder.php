@@ -11,6 +11,7 @@ use ToDoApp\Controller\Todos as TodosController;
 use ToDoApp\Controller\Todos;
 use ToDoApp\Controller\UpdateTodoAction;
 use ToDoApp\Dao\TodosDao;
+use ToDoApp\Sanitizer\InputSanitizer;
 use ToDoApp\Validator\InputValidator;
 
 class AppBuilder
@@ -81,7 +82,8 @@ class AppBuilder
             return new InsertTodoAction(
                 new TodosDao($container['pdo']),
                 $container['view'],
-                new InputValidator()
+                new InputValidator(),
+                new InputSanitizer()
             );
         };
 
@@ -89,7 +91,8 @@ class AppBuilder
             return new UpdateTodoAction(
                 new TodosDao($container['pdo']),
                 $container['view'],
-                new InputValidator()
+                new InputValidator(),
+                new InputSanitizer()
             );
         };
     }

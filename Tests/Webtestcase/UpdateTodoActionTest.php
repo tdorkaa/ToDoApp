@@ -94,4 +94,30 @@ class UpdateTodoActionTest extends TestCase
         $this->assertEquals($todos, $actual);
     }
 
+    /**
+     * @test
+     */
+    public function actionUpdate_GivenInputsAreDirty_updateSanitizedInputs()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name2', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name3', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $requestBody = [
+            'name' => '<br>todo name2',
+            'description' => '      todo description1',
+            'due_at' => '2018-08-30 10:00:00          '
+        ];
+        $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
+        $actual = $this->listTodos();
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals([
+            $todos[0],
+            new Todo(2, 'todo name2', 'todo description1', '2018-08-30 10:00:00'),
+            $todos[2]
+        ], $actual);
+    }
+
 }
