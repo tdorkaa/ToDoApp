@@ -25,6 +25,30 @@ class Todo
     }
 
     /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @param mixed $due_at
+     */
+    public function setDueAt($due_at)
+    {
+        $this->due_at = $due_at;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
