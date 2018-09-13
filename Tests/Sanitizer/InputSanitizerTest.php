@@ -60,4 +60,14 @@ class InputSanitizerTest extends TestCase
         $this->assertEquals($todoSanitized, $actual);
     }
 
+    /**
+     * @test
+     */
+    public function sanitize_GivenTodoContainsTag_ReturnsSanitizedTodo()
+    {
+        $todo = new Todo(null, '<br>todo name', '<br>todo desc', '<br>2018-08-29 10:00:00');
+        $todoSanitized = new Todo(null, 'todo name', 'todo desc', '2018-08-29 10:00:00');
+        $actual = $this->inputSanitizer->sanitize($todo);
+        $this->assertEquals($todoSanitized, $actual);
+    }
 }
