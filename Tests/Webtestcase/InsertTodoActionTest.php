@@ -51,4 +51,18 @@ class InsertTodoActionTest extends TestCase
         $this->assertEquals("/?errors[]={$emptyNameCode}&errors[]={$emptyDescriptionCode}&errors[]={$emptyDueAt}", $response->getHeaderLine('Location'));
         $this->assertEquals([], $actual);
     }
+
+    /**
+     * @test
+     */
+    public function actionAdd_GivenDueAtInvalid_DoesNotInsertAndSendErrorsInUrl()
+    {
+        $body = ['name' => 'todo name', 'description' => 'todo description', 'due_at' => 'invalid due date'];
+        $response = $this->processRequest('POST', '/create/todo', $body);
+        $actual = $this->list('todos');
+        $this->assertEquals(301, $response->getStatusCode());
+        $invalidDueDate = InputValidator::ERROR_INVALID_DUE_AT;
+        $this->assertEquals("/?errors[]={$invalidDueDate}", $response->getHeaderLine('Location'));
+        $this->assertEquals([], $actual);
+    }
 }
