@@ -69,4 +69,29 @@ class UpdateTodoActionTest extends TestCase
         $this->assertEquals($todos, $actual);
     }
 
+    /**
+     * @test
+     */
+    public function actionUpdate_GivenDueAtInvalid_DoesNotInsertAndSendErrorsInUrl()
+    {
+        $todos = [
+            new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(2, 'todo name2', 'todo description1', '2018-08-29 10:00:00'),
+            new Todo(3, 'todo name3', 'todo description1', '2018-08-29 10:00:00'),
+        ];
+        $this->createTodos($todos);
+        $requestBody = [
+            'name' => 'todo name2',
+            'description' => 'todo description1',
+            'due_at' => 'invalid due at'
+        ];
+        $response = $this->processRequest('POST', '/update/todo/2', $requestBody);
+        $actual = $this->listTodos();
+        $this->assertEquals(301, $response->getStatusCode());
+
+        $invalidDueDate = InputValidator::ERROR_INVALID_DUE_AT;
+        $this->assertEquals("/?errors[]={$invalidDueDate}", $response->getHeaderLine('Location'));
+        $this->assertEquals($todos, $actual);
+    }
+
 }
