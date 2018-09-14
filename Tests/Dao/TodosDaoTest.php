@@ -29,7 +29,13 @@ class TodosDaoTest extends TestCase
         $todo = new Todo(1, 'todo name', 'todo description', '2018-08-29 10:00:00');
         $this->createTodos([$todo]);
         $result = $this->todosDao->listTodos();
-        $this->assertEquals($todo, $result[0]);
+        $this->assertEquals([
+                                'id' => 1,
+                                'name' => 'todo name',
+                                'description' => 'todo description',
+                                'due_at' => '2018-08-29 10:00:00',
+                                'status' => 'incomplete'
+        ], $result[0]);
     }
 
     /**
@@ -45,9 +51,27 @@ class TodosDaoTest extends TestCase
         ];
         $this->createTodos($todos);
         $result = $this->todosDao->listTodos();
-        $this->assertEquals($todos[0], $result[1]);
-        $this->assertEquals($todos[1], $result[2]);
-        $this->assertEquals($todos[2], $result[0]);
+        $this->assertEquals([
+            'id' => 1,
+            'name' => 'todo name1',
+            'description' => 'todo description1',
+            'due_at' => '2018-08-29 10:00:00',
+            'status' => 'incomplete'
+        ], $result[1]);
+        $this->assertEquals([
+            'id' => 2,
+            'name' => 'todo name2',
+            'description' => 'todo description2',
+            'due_at' => '2018-08-30 10:00:00',
+            'status' => 'incomplete'
+        ], $result[2]);
+        $this->assertEquals([
+            'id' => 3,
+            'name' => 'todo name3',
+            'description' => 'todo description3',
+            'due_at' => '2018-08-27 10:00:00',
+            'status' => 'incomplete'
+        ], $result[0]);
     }
 
     /**
@@ -63,9 +87,22 @@ class TodosDaoTest extends TestCase
         ];
         $this->createTodos($todos);
         $result = $this->todosDao->listTodos();
-        $this->assertEquals([
-            $todos[1],
-            $todos[2]
+        $this->assertEquals(
+        [
+            [
+                'id' => 2,
+                'name' => 'todo name2',
+                'description' => 'todo description2',
+                'due_at' => '2018-08-30 10:00:00',
+                'status' => 'incomplete'
+            ],
+            [
+                'id' => 3,
+                'name' => 'todo name3',
+                'description' => 'todo description3',
+                'due_at' => '2018-08-30 10:00:00',
+                'status' => 'incomplete'
+            ]
         ], $result);
     }
 
@@ -104,10 +141,10 @@ class TodosDaoTest extends TestCase
         $todo = new Todo(null, 'todo name1', 'todo description1', '2018-08-29 10:00:00');
         $this->todosDao->addTodo($todo);
         $actual = $this->todosDao->listTodos()[0];
-        $this->assertEquals($todo->getName(), $actual->getName());
-        $this->assertEquals($todo->getDescription(), $actual->getDescription());
-        $this->assertEquals($todo->getDueAt(), $actual->getDueAt());
-        $this->assertEquals($todo->getStatus(), $actual->getStatus());
+        $this->assertEquals($todo->getName(), $actual['name']);
+        $this->assertEquals($todo->getDescription(), $actual['description']);
+        $this->assertEquals($todo->getDueAt(), $actual['due_at']);
+        $this->assertEquals($todo->getStatus(), $actual['status']);
     }
 
     /**
@@ -120,7 +157,13 @@ class TodosDaoTest extends TestCase
         $updatedTodo = new Todo(1, 'updated name1', 'updated description1', '2018-08-30 10:00:00');
         $this->todosDao->updateTodo($updatedTodo);
         $actualTodo = $this->todosDao->listTodos()[0];
-        $this->assertEquals($updatedTodo, $actualTodo);
+        $this->assertEquals([
+            'id' => 1,
+            'name' => 'updated name1',
+            'description' => 'updated description1',
+            'due_at' => '2018-08-30 10:00:00',
+            'status' => 'incomplete'
+        ], $actualTodo);
     }
 
     /**
@@ -137,11 +180,31 @@ class TodosDaoTest extends TestCase
         $updatedTodo = new Todo(2, 'updated name1', 'updated description1', '2018-08-29 10:00:00');
         $this->todosDao->updateTodo($updatedTodo);
         $actualTodo = $this->todosDao->listTodos();
-        $this->assertEquals([
-            $todos[0],
-            $updatedTodo,
-            $todos[2]
-        ], $actualTodo);
+        $this->assertEquals(
+            [
+                [
+                    'id' => 1,
+                    'name' => 'todo name1',
+                    'description' => 'todo description1',
+                    'status' => 'incomplete',
+                    'due_at' => '2018-08-29 10:00:00'
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'updated name1',
+                    'description' => 'updated description1',
+                    'status' => 'incomplete',
+                    'due_at' => '2018-08-29 10:00:00'
+                ],
+                [
+                    'id' => 3,
+                    'name' => 'todo name1',
+                    'description' => 'todo description1',
+                    'status' => 'incomplete',
+                    'due_at' => '2018-08-29 10:00:00'
+                ]
+            ]
+        , $actualTodo);
     }
 
     /**
@@ -158,8 +221,20 @@ class TodosDaoTest extends TestCase
         $this->todosDao->deleteTodo(2);
         $actualTodo = $this->todosDao->listTodos();
         $this->assertEquals([
-            $todos[0],
-            $todos[2]
+            [
+                'id' => 1,
+                'name' => 'todo name1',
+                'description' => 'todo description1',
+                'status' => 'incomplete',
+                'due_at' => '2018-08-29 10:00:00'
+            ],
+            [
+                'id' => 3,
+                'name' => 'todo name1',
+                'description' => 'todo description1',
+                'status' => 'incomplete',
+                'due_at' => '2018-08-29 10:00:00'
+            ]
         ], $actualTodo);
     }
 

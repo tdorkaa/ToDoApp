@@ -84,7 +84,8 @@ class AppBuilder
             return new TodosController(
                 new TodosDao($container['pdo']),
                 $container['view'],
-                $container['csrf']
+                $container['csrf'],
+                new TodoFactory()
             );
         };
 

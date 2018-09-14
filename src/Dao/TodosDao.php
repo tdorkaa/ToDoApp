@@ -16,21 +16,7 @@ class TodosDao
         $this->PDO = $PDO;
     }
 
-    /**
-     * @return Todo[]
-     */
     public function listTodos()
-    {
-        $todos = $this->fetchTodos();
-
-        foreach ($todos as $index => $todo) {
-            $todos[$index] = Todo::fromArray($todo);
-        }
-
-        return $todos;
-    }
-
-    private function fetchTodos()
     {
         $statusIncomplete = Status::INCOMPLETE;
         $statement = $this->PDO->prepare("SELECT id, name, description, status, due_at 
@@ -38,7 +24,6 @@ class TodosDao
             WHERE status=:status
             ORDER BY due_at ASC"
         );
-
         $statement->execute([':status' => $statusIncomplete]);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }

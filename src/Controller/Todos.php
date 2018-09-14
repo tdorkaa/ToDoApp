@@ -7,6 +7,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use ToDoApp\Dao\TodosDao;
+use ToDoApp\TodoFactory;
 
 class Todos
 {
@@ -22,12 +23,17 @@ class Todos
      * @var Guard
      */
     private $csrf;
+    /**
+     * @var TodoFactory
+     */
+    private $todoFactory;
 
-    public function __construct(TodosDao $dao, Twig $twig, Guard $csrf)
+    public function __construct(TodosDao $dao, Twig $twig, Guard $csrf, TodoFactory $todoFactory)
     {
         $this->dao = $dao;
         $this->twig = $twig;
         $this->csrf = $csrf;
+        $this->todoFactory = $todoFactory;
     }
 
     public function actionIndex(Request $request, Response $response, array $args)
@@ -35,7 +41,7 @@ class Todos
         $errors = $request->getParam('errors');
 
         $twigParameters = [
-            'todos' => $this->dao->listTodos(),
+            'todos' => $this->todoFactory->buildList($this->dao->listTodos()),
         ];
         if ($errors) {
             $twigParameters['errors'] = $errors;
