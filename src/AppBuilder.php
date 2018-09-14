@@ -22,9 +22,7 @@ class AppBuilder
     {
         if(!$container) {
             $container = new Container();
-            $container['csrf'] = function ($c) {
-                return new Guard;
-            };
+            $container = self::setCsrf($container);
         }
 
         $app = new App($container);
@@ -106,5 +104,17 @@ class AppBuilder
                 new InputSanitizer()
             );
         };
+    }
+
+    /**
+     * @param Container $container
+     * @return Container
+     */
+    private static function setCsrf(Container $container): Container
+    {
+        $container['csrf'] = function ($c) {
+            return new Guard;
+        };
+        return $container;
     }
 }

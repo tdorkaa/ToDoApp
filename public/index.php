@@ -2,7 +2,7 @@
 
 use ToDoApp\AppBuilder;
 
-require '../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
 $app = AppBuilder::build();
 $app->run();
