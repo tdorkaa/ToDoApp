@@ -22,7 +22,7 @@ ssh-test: ## SSH into web server container
 	docker-compose exec test /bin/bash
 
 phpunit:
-	docker-compose exec test /bin/bash -l -c "vendor/bin/phpunit Tests --colors"
+	docker-compose exec test /bin/bash -l -c "cd Tests && ../vendor/bin/phpunit . --colors"
 
 mysql: ## Opens mysql cli
 	docker-compose exec mysql mysql -u academy -pacademy
