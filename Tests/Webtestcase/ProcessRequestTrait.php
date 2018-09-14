@@ -12,27 +12,11 @@ use ToDoApp\AppBuilder;
 trait ProcessRequestTrait
 {
 
-    private function processRequest($method, $url, $body = null): Response
+    private function processRequest($method, $url, $body = null, $useMockcsrf = true): Response
     {
-        $configuration = [
-            'settings' => [
-                'displayErrorDetails' => true,
-            ],
-        ];
-        $container = new Container($configuration);
-
-        $mock = $this->getMockBuilder(Guard::class)
-            ->setMethods(['validateToken'])
-            ->getMock();
-
-        $mock
-            ->expects($this->any())
-            ->method('validateToken')
-            ->willReturn(true);
-
-        $container['csrf'] = function ($c) use($mock) {
-            return $mock;
-        };
+        if($useMockcsrf) {
+            $container = $this->addMockCsrf();
+        }
 
         $app = AppBuilder::build($container);
 
@@ -48,5 +32,29 @@ trait ProcessRequestTrait
 
         return $app->process($request, new Response());
     }
+
+    private function addMockCsrf()
+    {
+        $configuration = [
+            'settings' => [
+                'displayErrorDetails' => true,
+            ],
+        ];
+        $container = new Container($configuration);
+        $mock = $this->getMockBuilder(Guard::class)
+            ->setMethods(['validateToken'])
+            ->getMock();
+
+        $mock
+            ->expects($this->any())
+            ->method('validateToken')
+            ->willReturn(true);
+
+        $container['csrf'] = function ($c) use ($mock) {
+            return $mock;
+        };
+        return $container;
+    }
+
 
 }
