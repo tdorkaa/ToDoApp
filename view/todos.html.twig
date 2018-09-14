@@ -1,29 +1,44 @@
-<h1>Todos</h1>
-<ul>
-{% for todo in todos %}
-    <li>
-        <form method="POST" action="/set-complete/todo/{{ todo.getId() }}">
-            <input type="hidden" name={{ nameKey }} value={{ name }}>
-            <input type="hidden" name={{ valueKey }} value={{ value }}>
-            <button type="submit">It is done.</button>
-        </form>
-        <form method="POST" action="/delete/todo/{{ todo.getId() }}">
-            <input type="hidden" name={{ nameKey }} value={{ name }}>
-            <input type="hidden" name={{ valueKey }} value={{ value }}>
-            <button type="submit">Delete</button>
-        </form>
-        <button><a href="/update/todo/{{ todo.getId() }}">Update</a></button>
-    </li>
-    <li>{{ todo.getName() }}</li>
-    <li>{{ todo.getDescription() }}</li>
-    <li>{{ todo.getDueAt() }}</li>
-    <br/>
-{% endfor %}
-</ul>
+<h3>Todos</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Dua AT</th>
+        <th>Set Complete</th>
+        <th>Delete</th>
+        <th>Update</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for todo in todos %}
+        <tr>
+            <td style="text-align: center">{{ todo.getName() }}</td>
+            <td style="text-align: center">{{ todo.getDescription() }}</td>
+            <td style="text-align: center">{{ todo.getDueAt() }}</td>
+            <td style="text-align: center">
+                <form method="POST" action="/set-complete/todo/{{ todo.getId() }}">
+                    <input type="hidden" name={{ nameKey }} value={{ name }}>
+                    <input type="hidden" name={{ valueKey }} value={{ value }}>
+                    <button type="submit">It is done.</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="/delete/todo/{{ todo.getId() }}">
+                    <input type="hidden" name={{ nameKey }} value={{ name }}>
+                    <input type="hidden" name={{ valueKey }} value={{ value }}>
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+            <td><button><a href="/update/todo/{{ todo.getId() }}">Update</a></button></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 <form method="POST" action="/create/todo">
     <input type="hidden" name={{ nameKey }} value={{ name }}>
     <input type="hidden" name={{ valueKey }} value={{ value }}>
-    <div>New todo:</div>
+    <h3>New todo:</h3>
     {% if 'empty_name' in errors %}
         <p>Please fill the name field out.</p>
     {% endif %}
