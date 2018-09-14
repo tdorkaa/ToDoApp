@@ -65,7 +65,7 @@ class Todos
     public function actionUpdateIndex(Request $request, Response $response, array $args)
     {
         $twigParameters = [
-            'todo' => $this->dao->findById($args['id'])
+            'todo' => $this->todoFactory->build($this->dao->findById($args['id']))
         ];
         $twigParameters = $this->setTwigParameters($request, $twigParameters);
         $this->twig->render($response, 'todo-update.html.twig', $twigParameters);

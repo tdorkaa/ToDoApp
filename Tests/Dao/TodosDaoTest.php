@@ -270,6 +270,12 @@ class TodosDaoTest extends TestCase
         ];
         $this->createTodos($todos);
         $actual = $this->todosDao->findById(2);
-        $this->assertEquals($todos[1], $actual);
+        $this->assertEquals( [
+            'id' => 2,
+            'name' => 'todo name1',
+            'description' => 'todo description1',
+            'status' => 'incomplete',
+            'due_at' => '2018-08-29 10:00:00'
+        ], $actual);
     }
 }

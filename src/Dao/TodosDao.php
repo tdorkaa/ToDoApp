@@ -103,6 +103,6 @@ class TodosDao
             'id' => $id
         ]);
 
-        return Todo::fromArray($statement->fetch(\PDO::FETCH_ASSOC));
+        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 }
