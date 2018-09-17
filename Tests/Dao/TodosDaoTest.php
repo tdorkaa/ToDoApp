@@ -67,33 +67,6 @@ class TodosDaoTest extends TestCase
         $this->assertEquals([TodoForTest::$todo3, TodoForTest::$todo2], $result);
     }
 
-    private function createTodos($todos)
-    {
-        $sql = '
-            INSERT INTO todos (
-                name, 
-                description, 
-                status, 
-                due_at
-            )
-            VALUES (
-                :name, 
-                :description, 
-                :status, 
-                :due_at
-            )
-        ';
-        $statement = $this->PDO->prepare($sql);
-        foreach ($todos as $todo) {
-            $statement->execute(array(
-                ':name' => $todo->getName(),
-                ':description' => $todo->getDescription(),
-                ':status' => $todo->getStatus(),
-                ':due_at' => $todo->getDueAt()
-            ));
-        }
-    }
-
     /**
      * @test
      */
