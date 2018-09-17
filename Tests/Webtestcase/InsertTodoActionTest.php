@@ -4,6 +4,7 @@ namespace Tests\Webtestcase;
 
 use PHPUnit\Framework\TestCase;
 use Tests\DbHelperTrait;
+use Tests\TodoForTest;
 use ToDoApp\Validator\InputValidator;
 
 class InsertTodoActionTest extends TestCase
@@ -22,17 +23,11 @@ class InsertTodoActionTest extends TestCase
      */
     public function actionAdd_InsertsTodoToDb()
     {
-        $body = ['name' => 'todo name1', 'description' => 'todo description', 'due_at' => '2018-08-29 10:00:00', 'csrf_name' => 'a', 'csrf_value' => 'a'];
+        $body = ['name' => 'todo name1', 'description' => 'todo description1', 'due_at' => '2018-08-29 10:00:00', 'csrf_name' => 'a', 'csrf_value' => 'a'];
         $response = $this->processRequest('POST', '/create/todo', $body);
         $actual = $this->list('todos');
         $this->assertEquals(301, $response->getStatusCode());
-        $this->assertEquals([
-            'id' => 1,
-            'name' => 'todo name1',
-            'description' => 'todo description',
-            'status' => 'incomplete',
-            'due_at' => '2018-08-29 10:00:00'
-        ], $actual[0]);
+        $this->assertEquals(TodoForTest::$todo1, $actual[0]);
     }
 
     /**
@@ -71,16 +66,10 @@ class InsertTodoActionTest extends TestCase
      */
     public function actionAdd_GivenInputsAreNotClean_InsertSanitizedTodo()
     {
-        $body = ['name' => '<br>todo name', 'description' => '       todo description', 'due_at' => '2018-08-29 10:00:00         ', 'csrf_name' => 'a', 'csrf_value' => 'a'];
+        $body = ['name' => '<br>todo name1', 'description' => '       todo description1', 'due_at' => '2018-08-29 10:00:00         ', 'csrf_name' => 'a', 'csrf_value' => 'a'];
         $response = $this->processRequest('POST', '/create/todo', $body);
         $actual = $this->list('todos');
         $this->assertEquals(301, $response->getStatusCode());
-        $this->assertEquals([
-            'id' => 1,
-            'name' => 'todo name',
-            'description' => 'todo description',
-            'status' => 'incomplete',
-            'due_at' => '2018-08-29 10:00:00'
-        ], $actual[0]);
+        $this->assertEquals(TodoForTest::$todo1, $actual[0]);
     }
 }
