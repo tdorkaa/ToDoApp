@@ -83,7 +83,7 @@ class AppBuilder
                 new TodosDao($container['pdo']),
                 $container['view'],
                 $container['csrf'],
-                new TodoFactory()
+                new ConverterToTodo()
             );
         };
 

@@ -4,9 +4,9 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use ToDoApp\Entity\Todo;
-use ToDoApp\TodoFactory;
+use ToDoApp\ConverterToTodo;
 
-class TodoFactoryTest extends TestCase
+class ConverterToTodoTest extends TestCase
 {
     /**
      * @test
@@ -20,8 +20,8 @@ class TodoFactoryTest extends TestCase
                         'due_at' => '2018-08-29 10:00:00',
                         'status' => 'complete'
                         ];
-        $todoFactory = new TodoFactory();
-        $actual = $todoFactory->build($arrayToBuild);
+        $converterToTodo = new ConverterToTodo();
+        $actual = $converterToTodo->build($arrayToBuild);
         $this->assertEquals(new Todo(2, 'My todo', 'my description', '2018-08-29 10:00:00', 'complete'), $actual);
     }
 
@@ -47,8 +47,8 @@ class TodoFactoryTest extends TestCase
             ],
 
         ];
-        $todoFactory = new TodoFactory();
-        $actual = $todoFactory->buildList($arrayToBuild);
+        $converterToTodo = new ConverterToTodo();
+        $actual = $converterToTodo->buildList($arrayToBuild);
         $this->assertEquals([new Todo(2, 'My todo', 'my description',
                     '2018-08-29 10:00:00', 'complete'),
                             new Todo(3, 'My todo', 'my description',

@@ -7,7 +7,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use ToDoApp\Dao\TodosDao;
-use ToDoApp\TodoFactory;
+use ToDoApp\ConverterToTodo;
 
 class Todos
 {
@@ -24,16 +24,16 @@ class Todos
      */
     private $csrf;
     /**
-     * @var TodoFactory
+     * @var ConverterToTodo
      */
-    private $todoFactory;
+    private $converterToTodo;
 
-    public function __construct(TodosDao $dao, Twig $twig, Guard $csrf, TodoFactory $todoFactory)
+    public function __construct(TodosDao $dao, Twig $twig, Guard $csrf, ConverterToTodo $converterToTodo)
     {
         $this->dao = $dao;
         $this->twig = $twig;
         $this->csrf = $csrf;
-        $this->todoFactory = $todoFactory;
+        $this->converterToTodo = $converterToTodo;
     }
 
     public function actionIndex(Request $request, Response $response, array $args)
@@ -41,7 +41,7 @@ class Todos
         $errors = $request->getParam('errors');
 
         $twigParameters = [
-            'todos' => $this->todoFactory->buildList($this->dao->listTodos()),
+            'todos' => $this->converterToTodo->buildList($this->dao->listTodos()),
         ];
         if ($errors) {
             $twigParameters['errors'] = $errors;
@@ -65,7 +65,7 @@ class Todos
     public function actionUpdateIndex(Request $request, Response $response, array $args)
     {
         $twigParameters = [
-            'todo' => $this->todoFactory->build($this->dao->findById($args['id']))
+            'todo' => $this->converterToTodo->build($this->dao->findById($args['id']))
         ];
         $twigParameters = $this->setTwigParameters($request, $twigParameters);
         $this->twig->render($response, 'todo-update.html.twig', $twigParameters);

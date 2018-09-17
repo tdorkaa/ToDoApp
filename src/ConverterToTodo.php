@@ -4,7 +4,7 @@ namespace ToDoApp;
 
 use ToDoApp\Entity\Todo;
 
-class TodoFactory
+class ConverterToTodo
 {
 
     public function build(array $todo)
@@ -14,9 +14,9 @@ class TodoFactory
 
     public function buildList(array $todos)
     {
-        $todoFactory = new TodoFactory();
+        $converterToTodo = new ConverterToTodo();
         foreach ($todos as $index => $element) {
-            $todos[$index] = $todoFactory->build($element);
+            $todos[$index] = $converterToTodo->build($element);
         }
 
         return $todos;
