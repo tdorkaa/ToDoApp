@@ -85,7 +85,7 @@ class InputValidatorTest extends TestCase
     /**
      * @test
      */
-    public function validate_ThrowsExceptionDueDateIsNotValid()
+    public function validate_DueDateIsNotValid_ThrowsException()
     {
         try {
             $this->inputValidator->validate(new Todo(null, 'todo name', 'todo desc', 'invalid date'));

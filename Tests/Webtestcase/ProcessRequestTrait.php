@@ -15,7 +15,7 @@ trait ProcessRequestTrait
     private function processRequest($method, $url, $body = null, $useMockcsrf = true): Response
     {
         if($useMockcsrf) {
-            $container = $this->addMockCsrf();
+            $container = $this->createContainerWithMockCsrf();
         }
 
         $app = AppBuilder::build($container);
@@ -33,7 +33,7 @@ trait ProcessRequestTrait
         return $app->process($request, new Response());
     }
 
-    private function addMockCsrf()
+    private function createContainerWithMockCsrf()
     {
         $configuration = [
             'settings' => [
@@ -41,17 +41,18 @@ trait ProcessRequestTrait
             ],
         ];
         $container = new Container($configuration);
-        $mock = $this->getMockBuilder(Guard::class)
+
+        $mockGuard = $this->getMockBuilder(Guard::class)
             ->setMethods(['validateToken'])
             ->getMock();
 
-        $mock
+        $mockGuard
             ->expects($this->any())
             ->method('validateToken')
             ->willReturn(true);
 
-        $container['csrf'] = function ($c) use ($mock) {
-            return $mock;
+        $container['csrf'] = function ($c) use ($mockGuard) {
+            return $mockGuard;
         };
         return $container;
     }
