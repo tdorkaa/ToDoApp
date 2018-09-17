@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use ToDoApp\ConverterToTodo;
 use ToDoApp\Entity\Todo;
 use ToDoApp\EnvironmentLoader;
 use ToDoApp\PdoFactory;
@@ -35,7 +36,8 @@ trait DbHelperTrait
     private function listTodos(): array
     {
         return array_map(function ($todo) {
-            return Todo::fromArray($todo);
+            $converterToTodo = new ConverterToTodo();
+            return $converterToTodo->build($todo);
         }, $this->list('todos'));
     }
 

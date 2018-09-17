@@ -19,27 +19,4 @@ class TodoTest extends TestCase
         $this->assertEquals('2018-08-29 10:00:00', $todo->getDueAt());
         $this->assertEquals('incomplete', $todo->getStatus());
     }
-
-    /**
-     * @test
-     */
-    public function staticFromArray_GivenAssocArrayWithFieldValues_ReturnsTodo()
-    {
-        $this->assertEquals(
-            new Todo(
-                2,
-                'My todo',
-                'my description',
-                '2018-08-29 10:00:00',
-                'complete'
-            ),
-            Todo::fromArray([
-                'id' => 2,
-                'name' => 'My todo',
-                'description' => 'my description',
-                'due_at' => '2018-08-29 10:00:00',
-                'status' => 'complete'
-            ])
-        );
-    }
 }

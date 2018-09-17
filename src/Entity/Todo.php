@@ -10,11 +10,6 @@ class Todo
     private $due_at;
     private $id;
 
-    public static function fromArray($todo)
-    {
-        return new Todo($todo['id'], $todo['name'], $todo['description'], $todo['due_at'], $todo['status']);
-    }
-
     public function __construct($id, $name, $description, $due_at, $status = 'incomplete')
     {
         $this->name = $name;
