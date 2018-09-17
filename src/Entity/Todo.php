@@ -19,7 +19,7 @@ class Todo
     {
         $this->name = $name;
         $this->description = $description;
-        $this->setStatus($status);
+        $this->status = $status;
         $this->due_at = $due_at;
         $this->id = $id;
     }
@@ -73,19 +73,11 @@ class Todo
     }
 
     /**
-     * @return Status
+     * @return String
      */
     public function getStatus()
     {
         return $this->status;
-    }
-
-    private function setStatus($status)
-    {
-        if (!Status::isValid($status)) {
-            throw new \InvalidArgumentException('This status is not valid.');
-        }
-        $this->status = $status;
     }
 
     /**

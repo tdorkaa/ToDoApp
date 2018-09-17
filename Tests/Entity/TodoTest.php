@@ -23,16 +23,6 @@ class TodoTest extends TestCase
     /**
      * @test
      */
-    public function constructor_GivenStatusIsInvalid_ThrowsInvalidArgumentException()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('This status is not valid.');
-        new Todo(1, 'todo name1', 'todo description1', '2018-08-29 10:00:00', 'new');
-    }
-
-    /**
-     * @test
-     */
     public function staticFromArray_GivenAssocArrayWithFieldValues_ReturnsTodo()
     {
         $this->assertEquals(
