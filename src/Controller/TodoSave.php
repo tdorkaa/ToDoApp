@@ -52,9 +52,9 @@ abstract class TodoSave
         );
         $errors = [];
         try {
-            $this->inputSanitizer->sanitize($todo);
-            $this->inputValidator->validate($todo);
-            $this->saveTodo($todo);
+            $sanitizedTodo = $this->inputSanitizer->sanitize($todo);
+            $this->inputValidator->validate($sanitizedTodo);
+            $this->saveTodo($sanitizedTodo);
         } catch (InvalidInputException $exception) {
             $errors = $exception->getErrorCodes();
         }
